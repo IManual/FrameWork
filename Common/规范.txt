@@ -1,0 +1,79 @@
+Unity使用 2018.1f2
+命名规范：
+	文件命名：
+		所有单词首字母大写
+	函数命名：
+		一定要是 动词+xxx
+		如果是返回bool值判断类函数，则 可以采用  IsXXX, CanXXX, TryXXX,HasXXX
+		其余，则视函数功能而定
+		通用的动词有  Get  Set  Enter  Exit  Create Close Destroy Remove Add Clear Clean
+	变量命名：
+		遵从大驼峰法
+		成员变量：  m_ + [类型缩写] + 变量名称
+		静态变量：  s_ + [类型缩写] + 变量名称
+		局部变量：  单词全部小写，多个单词间用_分隔
+		[类型缩写]  常用类型才会类型缩写，自定义类型则可以不写
+		int		i
+		byte		by
+		short		s
+		long		l
+		float		f
+		double		d
+		string		str
+		char		c
+		list		lst
+		Dictionary	dic
+		Queue		que
+		Vector2		vec
+		Vector3		vec
+		Vector4		vec
+		Quaternion	qua
+		Material	mat
+		Texture		tex
+		GameObject	go
+		Transform	tf
+	常量：
+ 		所有单词大写，多个单词之间用 "_" 隔开。 如
+		public const string PAGE_TITLE = "Welcome";
+
+
+	注：要定义一个接口Resouece，则必须为  I+Resouece  -> IResource
+
+注释：
+	给外部提供的接口一定要加注释
+
+格式：
+	1、两行代码间最多不能空超过一行。
+	2、方法之间最多不能空超过一行。
+	3、一行只允许存在一条语句。
+	4、列宽不宜太长以屏幕宽度为宜，超过则另起一行。
+	5、多个参数用逗号隔开，每个逗号后都应加一个空格。
+	6、除了 .之外，所有的二元操作符都应用空格与它们的操作数隔开。
+	7、 左花括号 “{” 放于关键字或方法名的下一行并与之对齐。如
+
+             if (condition)
+             {
+             }
+
+             public int Add(int x, int y)
+             {
+             }
+
+其他：
+	if判断使用短路原则
+	遍历操作最好不能嵌套超过两层
+	计时器创建使用之后界面关闭一定要销毁
+	BaseView子类的变量、事件、预制体绑定应放在LoadCallBack,在ReleaseCallBack释放资源
+	在变量声明时就必须对其做初始化。不论是 类中的成员变量还是函数中的局部变量，都必须初始化。
+
+
+
+
+
+
+
+
+
+
+
+	
