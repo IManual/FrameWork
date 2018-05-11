@@ -25,10 +25,13 @@ public class GlobalTimeRequest : BaseManager<GlobalTimeRequest> {
         }
     }
 
+    /// <summary>
+    /// 计时事件列表
+    /// </summary>
     private static List<TimeEvent> timerList = new List<TimeEvent>();
 
     /// <summary>
-    /// 倒计时
+    /// 添加计时事件
     /// </summary>
     /// <param name="time">时间</param>
     /// <param name="callBack">计时完成回调</param>

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Data基类
+/// </summary>
 public class BaseData {
 
     private BaseData instance;

@@ -31,11 +31,15 @@ public class MainView : BaseView {
     public override void LoadCallBack()
     {
         Debug.Log("LoadCallBack");
+
+        //添加两个UI事件监听
         ListenEvent("Click", Click);
         ListenEvent("ClickClose", ClickClose);
 
+        //获取UI变量
         text = FindVariable("text");
 
+        //获取UI界面对应的游戏物体
         tab1 = FindObj("Tab1");
         tab2 = FindObj("Tab2");
         tab3 = FindObj("Tab3");

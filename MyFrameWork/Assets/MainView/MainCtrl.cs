@@ -8,6 +8,7 @@ public class MainCtrl : BaseCtrl {
 
     public MainData selfData;
 
+   
     public override void __init()
     {
         if (Instance == null)

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 所有单例的基类
+/// 所有管理器模块的基类
 /// </summary>
 public class BaseManager<T> : MonoBase where T : BaseManager<T>
 {
@@ -45,7 +45,7 @@ public class BaseManager<T> : MonoBase where T : BaseManager<T>
     public Dictionary<ushort, Action<MsgBase>> eventTree = new Dictionary<ushort, Action<MsgBase>>();
 
     /// <summary>
-    /// 处理事件 上层MsgCenter收到消息通过该接口转发到各个Manager
+    /// 消息处理 上层MsgCenter收到消息通过该接口转发到各个Manager
     /// </summary>
     /// <param name="tmpMsg"></param>
     public override void ProcessEvent(MsgBase tmpMsg)
@@ -62,10 +62,10 @@ public class BaseManager<T> : MonoBase where T : BaseManager<T>
     }
 
     /// <summary>
-    /// 注册协议
+    /// 往管理器模块注册消息与对应处理方法
     /// </summary>
-    /// <param name="protocol"></param>
-    /// <param name="receiver"></param>
+    /// <param name="tmpMsg">消息</param>
+    /// <param name="handler">处理方法</param>
     public void Register(MsgBase tmpMsg, Action<MsgBase> handler)
     {
         if (eventTree.ContainsKey(tmpMsg.msgId))
@@ -81,6 +81,11 @@ public class BaseManager<T> : MonoBase where T : BaseManager<T>
         }
     }
 
+    /// <summary>
+    /// 解除消息与处理方法的对应
+    /// </summary>
+    /// <param name="tmpMsg">消息</param>
+    /// <param name="handler">处理方法</param>
     public void UnRegister(MsgBase tmpMsg, Action<MsgBase> handler)
     {
         if (eventTree.ContainsKey(tmpMsg.msgId))
@@ -92,6 +97,10 @@ public class BaseManager<T> : MonoBase where T : BaseManager<T>
         }
     }
 
+    /// <summary>
+    /// 解除指定消息对应的所有处理方法
+    /// </summary>
+    /// <param name="tmpMsg">消息</param>
     public void UnRegister(MsgBase tmpMsg)
     {
         if (eventTree.ContainsKey(tmpMsg.msgId))

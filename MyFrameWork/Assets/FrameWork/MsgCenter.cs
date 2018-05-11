@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 消息分发中心
+/// </summary>
 public class MsgCenter : BaseManager<MsgCenter> {
 
     /// <summary>
     /// 给对应模块发送消息
     /// </summary>
-    /// <param name="tmpMsg"></param>
 	public void SendToMsg(MsgBase tmpMsg)
     {
         AnasysisMsg(tmpMsg);
@@ -17,7 +19,6 @@ public class MsgCenter : BaseManager<MsgCenter> {
     /// <summary>
     /// 消息分发
     /// </summary>
-    /// <param name="msg"></param>
     private void AnasysisMsg(MsgBase tmpMsg)
     {
         ManagerID tmpId = tmpMsg.GetManager();

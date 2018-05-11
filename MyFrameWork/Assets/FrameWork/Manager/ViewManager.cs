@@ -8,19 +8,19 @@ using UnityEngine;
 public class ViewManager : BaseManager<ViewManager> {
 
     /// <summary>
-    /// view Object池
+    /// View名字 和 其所在游戏物体 的字典
     /// </summary>
     Dictionary<string, GameObject> viewDic;
 
     /// <summary>
-    /// 开启的view 脚本池
+    /// 打开的View列表
     /// </summary>
     List<BaseView> openViewList = new List<BaseView>();
 
     /// <summary>
-    /// view 脚本池
+    /// View名字 和 其对应的View 的字典
     /// </summary>
-    Dictionary<string, BaseView> viewList = new Dictionary<string, BaseView>();
+    Dictionary<string, BaseView> nameViewDic = new Dictionary<string, BaseView>();
 
     protected override void Init()
     {
@@ -28,29 +28,29 @@ public class ViewManager : BaseManager<ViewManager> {
     }
 
     /// <summary>
-    /// 所有BaseView模块加载完成时 再初始化 
+    /// 根据 nameViewDic里保存的View名字加载所有对应的游戏物体到viewDic中
     /// </summary>
     public void InitViewObject()
     {
         viewDic = new Dictionary<string, GameObject>();
-        foreach (var item in viewList)
+        foreach (var item in nameViewDic)
         {
             viewDic.Add(item.Key, Resources.Load<GameObject>(item.Key));
         }
     }
 
 /// <summary>
-/// 打开一个界面
+/// 打开一个View
 /// </summary>
 /// <param name="name"></param>
 public void Open(string viewName)
     {
         if (viewDic.ContainsKey(viewName))
         {
-            //如果存在 打开
-            if (openViewList.Exists(a => a == viewList[viewName]))
+            //如果界面已创建  直接打开
+            if (openViewList.Exists(a => a == nameViewDic[viewName]))
             {
-                viewList[viewName].Open();
+                nameViewDic[viewName].Open();
             }
             else
             {
@@ -59,12 +59,15 @@ public void Open(string viewName)
                 go.transform.SetParent(Game.Instance.UILayer, false);
                 go.transform.localScale = new Vector3(1, 1, 1);
                 go.transform.position = Game.Instance.UILayer.position;
-                viewList[viewName].PrefabLoadCallBack(go);
-                openViewList.Add(viewList[viewName]);
+                nameViewDic[viewName].PrefabLoadCallBack(go);
+                openViewList.Add(nameViewDic[viewName]);
             }
         }
     }
 
+    /// <summary>
+    /// 关闭所有View
+    /// </summary>
     public void CloseAllView()
     {
         foreach (var item in openViewList)
@@ -73,24 +76,40 @@ public void Open(string viewName)
         }
     }
 
+    /// <summary>
+    /// View是否已打开
+    /// </summary>
     public bool CheckOpen(BaseView view)
     {
-        return view.IsOpen();
+        return view.IsOpen;
     }
 
+    /// <summary>
+    /// 将View从 openViewList 中删除
+    /// </summary>
+    /// <param name="view"></param>
     public void RemoveOpen(BaseView view)
     {
         openViewList.Remove(view);
     }
 
+    /// <summary>
+    /// 将View添加到 nameViewDic
+    /// </summary>
+    /// <param name="viewName"></param>
+    /// <param name="baseView"></param>
     public void RegisterView(string viewName, BaseView baseView)
     {
-        this.viewList.Add(viewName, baseView);
+        this.nameViewDic.Add(viewName, baseView);
     }
 
+    /// <summary>
+    /// 将View从两个字典里删除
+    /// </summary>
+    /// <param name="viewName"></param>
     public void UnRegisterView(string viewName)
     {
-        this.viewList.Remove(viewName);
+        this.nameViewDic.Remove(viewName);
         this.viewDic.Remove(viewName);
     }
 }

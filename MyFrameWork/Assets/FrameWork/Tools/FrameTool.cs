@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FrameTool {
+    /// <summary>
+    /// 各消息模块的消息ID间隔
+    /// </summary>
     public const int MsgSpan = 3000;
 }
 

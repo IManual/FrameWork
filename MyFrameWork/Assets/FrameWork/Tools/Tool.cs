@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class Tool
 {
+    /// <summary>
+    /// 寻找父物体的Transform组件
+    /// </summary>
     public static Transform FindFather(Transform target, Func<Transform,bool> func)
     {
         if (target.parent == null)

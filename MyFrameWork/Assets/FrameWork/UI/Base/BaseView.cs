@@ -6,28 +6,43 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 
 /// <summary>
-/// 基础view类 所有View都继承自baseview
+/// View基类
 /// </summary>
 public class BaseView
 {
 
-    private bool is_open;
+    /// <summary>
+    /// View名字
+    /// </summary>
+    private string viewName;
 
-    private bool is_real_open;
+    /// <summary>
+    /// View的界面
+    /// </summary>
+    public GameObject viewGameobject;
 
+    /// <summary>
+    /// View是否打开
+    /// </summary>
+    public bool IsOpen { get; private set; }
+
+    /// <summary>
+    /// View是否是在界面已创建的情况下打开
+    /// </summary>
+    public bool IsRealOpen { get; private set; }
+
+    /// <summary>
+    /// 计时事件
+    /// </summary>
     private TimeEvent deleteTimer;
 
-    string viewName;
+    private EventTable eventTable;
 
-    EventTable eventTable;
+    private VariableTable variableTable;
 
-    VariableTable variableTable;
-
-    NameTable nameTable;
+    private NameTable nameTable;
 
     public string bundleName;
-
-    public GameObject viewGameobject;
 
     int def_index = 0;
     int? last_index = null;
@@ -40,10 +55,15 @@ public class BaseView
     public BaseView(string viewName)
     {   
         this.viewName = viewName;
+        //将自身名字和对象添加进ViewManger的字典里
         ViewManager.Instance.RegisterView(viewName, this);
         __init();
     }
 
+    /// <summary>
+    /// View界面创建完成后的回调
+    /// </summary>
+    /// <param name="go"></param>
     public virtual void PrefabLoadCallBack(GameObject go)
     {
         viewGameobject = go;
@@ -56,30 +76,36 @@ public class BaseView
     }
 
     /// <summary>
-    /// 单纯的打开 （未销毁又打开调用）
+    /// 界面已创建的情况下打开界面
     /// </summary>
     /// <param name="index"></param>
     public void Open(int? index = null)
     {
-        //如果未传入index  加载主界面
-        is_real_open = true;
+        
+        IsRealOpen = true;
 
+        //如果未传入index  加载主界面
         if (index == null)
         {
             index = def_index;
         }
+
+        //如果计时事件不为空，就将其置空
         if (deleteTimer != null)
         {
             GlobalTimeRequest.CancleTime(deleteTimer);
             deleteTimer = null;
         }
+
         if (viewGameobject != null)
         {
-            if (!is_open)
+            if (!IsOpen)
             {
+                //激活界面 并初始化数据
                 SetActive(true);
                 viewGameobject.transform.localScale = new Vector3(1, 1, 1);
                 viewGameobject.transform.position = Game.Instance.UILayer.position;
+                //调用回调方法
                 OpenCallBack();
             }
             else
@@ -89,10 +115,13 @@ public class BaseView
         }
     }
 
+    /// <summary>
+    /// 设置View界面是否激活
+    /// </summary>
     public void SetActive(bool state)
     {
         Debug.Log(state);
-        is_open = state;
+        IsOpen = state;
         viewGameobject.SetActive(state);
     }
 
@@ -112,22 +141,19 @@ public class BaseView
         this.ReleaseCallBack();
     }
 
+    /// <summary>
+    /// 释放View
+    /// </summary>
     public void Release()
     {
         ViewManager.Instance.UnRegisterView(viewName);
         __delete();
     }
 
-    public bool IsOpen()
-    {
-        return is_open;
-    }
 
-    public bool IsRealOpen()
-    {
-        return is_real_open;
-    }
-
+    /// <summary>
+    /// 对应的标签页Toggle勾选时的触发方法
+    /// </summary>
     public void OnToggleChange(int index)
     {
         if (show_index == index) return;
@@ -144,7 +170,7 @@ public class BaseView
     #region 子类调用
 
     /// <summary>
-    /// 标签页toggle
+    /// 为指定的标签页Toggle组件添加勾选监听
     /// </summary>
     /// <param name="toggle"></param>
     /// <param name="listener"></param>
@@ -157,6 +183,9 @@ public class BaseView
         });
     }
 
+    /// <summary>
+    /// 从NameTable的字典里寻找UI相关的游戏物体
+    /// </summary>
     public GameObject FindObj(string objName)
     {     
         try
@@ -170,6 +199,9 @@ public class BaseView
         }
     }
 
+    /// <summary>
+    /// 从VariableTable的数组里寻找UI相关的变量
+    /// </summary>
     public UIVariable FindVariable(string variableName)
     {
         try
@@ -183,6 +215,9 @@ public class BaseView
         }
     }
 
+    /// <summary>
+    /// 往EventTable的字典里添加事件监听
+    /// </summary>
     public void ListenEvent(string eventName, UnityAction listener)
     {
         try
@@ -196,18 +231,27 @@ public class BaseView
         }      
     }
 
+    /// <summary>
+    /// 取消指定事件的监听
+    /// </summary>
     public void ClearEvent(string eventName)
     {
         if (eventTable != null)
             eventTable.ClearEvent(eventName);
     }
 
+    /// <summary>
+    /// 取消所有事件的监听
+    /// </summary>
     public void ClearAllEvent()
     {
         if (eventTable != null)
             eventTable.ClearAllEvent();
     }
 
+    /// <summary>
+    /// 关闭View界面
+    /// </summary>
     public void Close()
     {
         viewGameobject.SetActive(false);
@@ -217,7 +261,7 @@ public class BaseView
 
     #endregion
 
-    #region 子类继承
+    #region 需要子类重写的生命周期方法
 
     /// <summary>
     /// 预制件加载完成时调用

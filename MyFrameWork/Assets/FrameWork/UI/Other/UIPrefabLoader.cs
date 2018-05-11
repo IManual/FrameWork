@@ -1,6 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
+/// <summary>
+/// UI界面预制体的脚本
+/// </summary>
 public class UIPrefabLoader : MonoBehaviour
 {
     [SerializeField]

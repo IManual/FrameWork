@@ -8,7 +8,7 @@ public class GameRoot : BaseManager<GameRoot>
     protected override void Awake()
     {
         //初始化ctrl
-        ModulesControl.__init();
+        MVCEntry.__init();
         gameObject.AddComponent<GlobalTimeRequest>();
     }
 
@@ -25,7 +25,7 @@ public class GameRoot : BaseManager<GameRoot>
 
     protected override void OnApplicationQuit()
     {
-        ModulesControl.__delete();
+        MVCEntry.__delete();
     }
 
     protected override void OnDestroy()

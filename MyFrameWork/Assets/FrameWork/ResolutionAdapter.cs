@@ -22,6 +22,7 @@ public sealed class ResolutionAdapter : MonoBehaviour
 
 	private void Start()
 	{
+        // 获取到Canvas组件
 		this.canvas = this.GetComponent<Canvas>();
 		if (null == this.canvas || !this.canvas.isRootCanvas)
 		{
@@ -47,15 +48,20 @@ public sealed class ResolutionAdapter : MonoBehaviour
             return;
         }
 #endif
-
+        //获取到Scaler组件
 		if (null == this.scaler)
 		{
 			this.scaler = this.GetComponent<CanvasScaler>();
 		}
 
+        //计算屏幕宽高比
 		var radio = (float)Screen.width / Screen.height;
+
+        //计算参考分辨率的宽高比
 		var refRadio = this.scaler.referenceResolution.x / this.scaler.referenceResolution.y;
-		if (radio > refRadio)
+
+        //判断 屏幕宽高比 是否大于 参考分辨率的宽高比
+        if (radio > refRadio)
 		{
 			this.scaler.matchWidthOrHeight = 1.0f;
 		}

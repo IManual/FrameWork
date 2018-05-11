@@ -4,17 +4,18 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// 全局事件
+/// 全局事件系统
 /// </summary>
 public static class GlobalEventSystem {
 
+    /// <summary>
+    /// 全局事件与对应处理方法的字典
+    /// </summary>
     private static Dictionary<string, UnityAction> actionTree = new Dictionary<string, UnityAction>();
 
     /// <summary>
-    /// 注册全局事件
+    /// 绑定全局事件和对应的处理方法
     /// </summary>
-    /// <param name="type"></param>
-    /// <param name="call"></param>
     public static void Bind(GlobalEventType type, UnityAction call)
     {
         if (actionTree.ContainsKey(type.ToString()))
@@ -35,28 +36,27 @@ public static class GlobalEventSystem {
     }
 
     /// <summary>
-    /// 注销某类全局事件
+    /// 触发全局事件
     /// </summary>
-    /// <param name="type"></param>
-    public static void UnBind(GlobalEventType type)
+    /// <param name="type">全局事件类型</param>
+    public static void Fire(GlobalEventType type)
     {
         if (actionTree.ContainsKey(type.ToString()))
         {
-            UnityAction tmpCall = actionTree[type.ToString()];
-            tmpCall = null;
-            actionTree.Remove(type.ToString());
+            if (actionTree[type.ToString()] != null)
+            {
+                actionTree[type.ToString()]();
+            }
         }
         else
         {
-            Debug.LogError("UnBind Error, no such type == " + type.ToString());
+            Debug.LogError("No Such Event == " + type.ToString());
         }
     }
 
     /// <summary>
-    /// 注销单个全局事件
+    /// 注销某个全局事件的指定处理方法
     /// </summary>
-    /// <param name="type"></param>
-    /// <param name="call"></param>
     public static void UnBind(GlobalEventType type, UnityAction call)
     {
         if (actionTree.ContainsKey(type.ToString()))
@@ -85,23 +85,22 @@ public static class GlobalEventSystem {
     }
 
     /// <summary>
-    /// 响应全局事件
+    /// 注销某个全局事件的所有处理方法
     /// </summary>
-    /// <param name="type">全局事件类型</param>
-    public static void Fire(GlobalEventType type)
+    public static void UnBind(GlobalEventType type)
     {
         if (actionTree.ContainsKey(type.ToString()))
         {
-            if (actionTree[type.ToString()] != null)
-            {
-                actionTree[type.ToString()]();
-            }
+            UnityAction tmpCall = actionTree[type.ToString()];
+            tmpCall = null;
+            actionTree.Remove(type.ToString());
         }
         else
         {
-            Debug.LogError("No Such Event == " + type.ToString());
+            Debug.LogError("UnBind Error, no such type == " + type.ToString());
         }
     }
+
 
     /// <summary>
     /// 注销所有全局事件
