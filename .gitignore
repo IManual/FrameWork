@@ -2,3 +2,9 @@
 MyFrameWork/Library
 MyFrameWork/Temp
 MyFrameWork/Packages
+MyFrameWork/MyFrameWork.csproj
+MyFrameWork/MyFrameWork.Editor.csproj
+MyFrameWork/MyFrameWork.sln
+MyFrameWork/Unity.PackageManagerUI.Editor.csproj
+MyFrameWork/UnityEditor.StandardEvents.csproj
+MyFrameWork/.vs
