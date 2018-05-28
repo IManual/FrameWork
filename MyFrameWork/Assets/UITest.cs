@@ -27,8 +27,8 @@ public class UITest : BaseBehaviour {
         //table.ListenEvent("Click", Click);
         //table.ListenEvent("ClickThree", ClickThree);
         //       
-        GlobalEventSystem.Bind(GlobalEventType.test, ClickThree);
-       // GlobalEventSystem.Bind(GlobalEventType.test2, ClickTwo);
+        GlobalEventSystem.Bind("test", ClickThree);
+       // GlobalEventSystem.Bind(string.test2, ClickTwo);
 
         //TimeControl timer = TimeControl.CreaterTimer();
         //timer.StartTiming(10, Complete, Func, 3, true, false, true);

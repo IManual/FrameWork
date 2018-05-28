@@ -1,0 +1,1 @@
+MsgAdapter = MsgAdapter or {}
