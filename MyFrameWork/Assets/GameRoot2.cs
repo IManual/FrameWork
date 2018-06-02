@@ -6,7 +6,7 @@ using UnityEngine;
 using XLua;
 
 [LuaCallCSharp]
-public class GameRoot2 : BaseManager<GameRoot2>
+public class GameRoot2 : MonoSingleton<GameRoot2>
 {
 
     LuaManager luaMnager;

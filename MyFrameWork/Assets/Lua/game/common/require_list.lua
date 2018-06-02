@@ -9,7 +9,7 @@ local lua_file_list ={
 	"gamenet/net_manager",
 	"protocolcommon/userprotocol/user_protocol",
 
-
+	"config/config_manager",
 	"manager/loading_priority_manager",
 
 	"game/common/modules_controller",

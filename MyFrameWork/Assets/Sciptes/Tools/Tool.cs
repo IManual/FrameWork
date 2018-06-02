@@ -34,14 +34,10 @@ public class Tool
     /// <param name="dic"></param>
     /// <param name="key"></param>
     /// <returns></returns>
-    public static T2 GetDicValueByKey<T1, T2>(Dictionary<T1,T2> dic, T1 key) where T1:class where T2: class
+    public static T2 GetDicValueByKey<T1, T2>(Dictionary<T1, T2> dic, T1 key)
     {
-        if (dic.ContainsKey(key))
-        {
-            return dic[key];
-        }
-
-        return null as T2;
+        T2 value;
+        return dic.TryGetValue(key, out value) ? value : default(T2);
     }
 }
 

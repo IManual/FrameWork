@@ -50,27 +50,29 @@ public class GameNet : IPhotonPeerListener
     }
 
     //协议池
-    private Dictionary<byte, Request> requestPool = new Dictionary<byte, Request>();
+    private Dictionary<byte, ProtocolBase> protocolPool = new Dictionary<byte, ProtocolBase>();
 
     public void DebugReturn(DebugLevel level, string message)
     {
-        
+        Debug.LogError(message);
     }
 
     //服务器主动发送消息时回调
     public void OnEvent(EventData eventData)
     {
-        
-        //BaseEvent e = 
+        ProtocolBase protocol = null; //创建空的协议对象
+        if (protocolPool.TryGetValue(eventData.Code, out protocol))
+            protocol.OnEvent(eventData);
+        else
+            Debug.LogError("Error: no operation instance");
     }
 
     //服务端响应回调
     public void OnOperationResponse(OperationResponse operationResponse)
     {
-        Request request = null; //创建空的操作类型对象
-        bool temp = requestPool.TryGetValue(operationResponse.OperationCode, out request);
-        if (temp)
-            request.OnOperationResponse(operationResponse);
+        ProtocolBase protocol = null; //创建空的协议对象
+        if (protocolPool.TryGetValue(operationResponse.OperationCode, out protocol))
+            protocol.OnOperationResponse(operationResponse);
         else
             Debug.LogError("Error: no operation instance");
     }
@@ -121,14 +123,34 @@ public class GameNet : IPhotonPeerListener
     /// <summary>
     /// 注册协议
     /// </summary>
-    /// <param name="request"></param>
-    public void RegisterRequest(Request request)
+    /// <param name="protocol"></param>
+    public void RegisterProtocol(ProtocolBase protocol)
     {
-        if (requestPool.ContainsKey(request.opCode))
+        if (protocolPool.ContainsKey(protocol.opCode))
         {
+            Debug.LogError("协议重复注册---------------协议号：" + protocol.opCode);
             return;
         }
-        requestPool.Add(request.opCode, request);
+        protocolPool.Add(protocol.opCode, protocol);
+    }
+
+    /// <summary>
+    /// 注册协议处理方法
+    /// </summary>
+    /// <param name="protocol"></param>
+    /// <param name="handeler">协议处理方法</param>
+    public void RegisterProtocolHandler(ProtocolBase protocol, ProtocolHandler handeler)
+    {
+        if (!protocolPool.ContainsValue(protocol))
+        {
+            Debug.LogWarning("The protocol is not register yet!" + protocol.opCode);
+            return;
+        }
+        if (protocol.handler == null)
+
+            protocol.handler = handeler;
+        else
+            protocol.handler += handeler;
     }
 
     public void DisConnected()
@@ -148,17 +170,24 @@ public class GameNet : IPhotonPeerListener
         OnSendError = null;
         OnReConnect = null;
 
-        RemoveAllRequest();
-        RemoveAllEvent();
+        RemoveAllProtocol();
     }
 
-    private void RemoveAllRequest()
+    /// <summary>
+    /// 反注册一条协议
+    /// </summary>
+    /// <param name="opCode"></param>
+    public void UnRegisterProtocol(byte opCode)
     {
-
+        if (protocolPool.ContainsKey(opCode))
+        {
+            protocolPool.Remove(opCode);
+        }
     }
-
-    private void RemoveAllEvent()
+    
+    //反注册所有协议
+    private void RemoveAllProtocol()
     {
-
+        protocolPool.Clear();
     }
 }

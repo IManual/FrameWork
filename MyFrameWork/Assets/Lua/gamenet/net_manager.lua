@@ -8,18 +8,18 @@ function NetManager:__init()
 
  	AddToUpdate(BindTool.Bind(self.Update, self))
 
- 	 GameNet.Instance:SetOnDisconnectCallBack(BindTool.Bind(self.OnDisconnect, self))
- 	 GameNet.Instance:SetOnSendErrorCallBack(BindTool.Bind(self.OnSendError, self))
- 	 GameNet.Instance:SetOnReConnectCallBack(BindTool.Bind(self.OnReConnect, self))
+ 	GameNet.Instance:SetOnDisconnectCallBack(BindTool.Bind(self.OnDisconnect, self))
+ 	GameNet.Instance:SetOnSendErrorCallBack(BindTool.Bind(self.OnSendError, self))
+ 	GameNet.Instance:SetOnReConnectCallBack(BindTool.Bind(self.OnReConnect, self))
 end
 
 function NetManager:Update(time, time2)
-	 GameNet.Instance:Update()
+	GameNet.Instance:Update()
 end
 
 function NetManager:__delete()
-	 GameNet.Instance:DisConnected()
-	 GameNet.Instance:Release()
+	GameNet.Instance:DisConnected()
+	GameNet.Instance:Release()
 
 	NetManager.Instance = nil
 end

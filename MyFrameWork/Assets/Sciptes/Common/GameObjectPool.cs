@@ -7,7 +7,7 @@ using System;
 /// 对象池
 /// </summary>
 
-public class GameObjectPool : BaseManager<GameObjectPool>
+public class GameObjectPool : MonoSingleton<GameObjectPool>
 { 
     //对象池
     private Dictionary<string, List<GameObject>> cache;

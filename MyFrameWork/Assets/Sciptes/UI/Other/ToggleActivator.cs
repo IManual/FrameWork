@@ -3,35 +3,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Toggle))]
 public class ToggleActivator : BaseBehaviour
 {
+    private Toggle toggle;
+
     public GameObject[] actives;
 
     public GameObject[] deactive;
 
-    protected override void Awake()
+    protected override void OnEnable()
     {
-        Toggle toggle = GetComponent<Toggle>();
+        this.toggle = GetComponent<Toggle>();
+        Active(this.toggle.isOn);
+        Deactive(!this.toggle.isOn);
+        this.toggle.onValueChanged.AddListener((state) =>
+        {
+            Active(state);
+            Deactive(!state);
+        });
+    }
+
+    public void Active(bool state)
+    {
         for (int i = 0; i < actives.Length; i++)
         {
-            actives[i].SetActive(toggle.isOn);
+            if (actives[i].gameObject != null)
+                actives[i].gameObject.SetActive(state);
         }
+    }
+
+    public void Deactive(bool state)
+    {
         for (int i = 0; i < deactive.Length; i++)
         {
-            deactive[i].SetActive(!toggle.isOn);
+            if (deactive[i].gameObject != null)
+                deactive[i].gameObject.SetActive(state);
         }
-
-        toggle.onValueChanged.AddListener(
-            (b) =>
-            {
-                for (int i = 0; i < actives.Length; i++)
-                {
-                    actives[i].SetActive(b);
-                }
-                for (int i = 0; i < deactive.Length; i++)
-                {
-                    deactive[i].SetActive(!b);
-                }
-            });
     }
 }

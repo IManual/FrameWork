@@ -441,7 +441,7 @@ end
 
 function BaseView:CancelDelayFlushTimer()
 	if self.delay_flush_timer ~= nil then
-		GlobalTimerQuest:CancelQuest(self.delay_flush_timer)
+		GlobalTimeRequest:CancelQuest(self.delay_flush_timer)
 		self.delay_flush_timer = nil
 	end
 end
