@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using XLua;
 
-[LuaCallCSharp]
 public static class GlobalTimeRequest {
 
     public static void Update()

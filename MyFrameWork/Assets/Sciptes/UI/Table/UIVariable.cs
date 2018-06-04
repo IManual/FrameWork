@@ -30,7 +30,7 @@ public class UIVariable
     /// <summary>
     /// 变量类型
     /// </summary>
-    public VariableTYPE type;
+    public UIVariableType type;
 
     /// <summary>
     /// 变量值
@@ -82,13 +82,13 @@ public class UIVariable
         {
             switch (this.type)
             {
-                case VariableTYPE.Bool:
+                case UIVariableType.Bollean:
                     return this.booleanValue;
-                case VariableTYPE.Float:
+                case UIVariableType.Float:
                     return this.floatValue;
-                case VariableTYPE.Int:
+                case UIVariableType.Interger:
                     return this.interValue;
-                case VariableTYPE.String:
+                case UIVariableType.String:
                     return this.stringValue;
                 default:
                     return null;
@@ -99,7 +99,7 @@ public class UIVariable
     /// <summary>
     /// 设置变量值
     /// </summary>
-    public void SetVlaue(object value)
+    public void SetValue(object value)
     {
         this.value = value;
         //触发变量改变事件

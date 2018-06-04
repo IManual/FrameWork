@@ -17,7 +17,7 @@ local lua_file_list ={
 	"game/common/game_enum",
 	"game/common/base_controller",
 	"game/common/base_view",
-
+	"game/common/base_render",
 
 	--需要放在ctrl 类前，common 后
 	"language/language",

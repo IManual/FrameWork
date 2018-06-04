@@ -16,10 +16,13 @@ public class VariableBindActiveEditor : Editor {
     {//targer为自身引用
         bind = (VariableBindActive)target;
         //查找当前引用的VariableTable
-        bind.table = Tool.FindFather(bind.transform, a =>
+        if (bind.table == null)
         {
-            return a.GetComponent<VariableTable>() != null;
-        }).GetComponent<VariableTable>();
+            bind.table = Tool.FindFather(bind.transform, a =>
+            {
+                return a.GetComponent<VariableTable>() != null;
+            }).GetComponent<VariableTable>();
+        }
     }
 
     public override void OnInspectorGUI()
@@ -32,7 +35,7 @@ public class VariableBindActiveEditor : Editor {
             //拿到所有bool类型
             for (int i = 0; i < variableTable.component.Length; i++)
             {
-                if(variableTable.component[i].type == VariableTYPE.Bool)
+                if(variableTable.component[i].type == UIVariableType.Bollean)
                 {
                     nameByType.Add(variableTable.component[i].name);
                 }

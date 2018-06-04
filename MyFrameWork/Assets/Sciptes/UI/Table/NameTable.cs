@@ -2,12 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using XLua;
 
 /// <summary>
 /// UI界面配置表
 /// </summary>
-[LuaCallCSharp]
 public class NameTable : BaseBehaviour {
 
     /// <summary>

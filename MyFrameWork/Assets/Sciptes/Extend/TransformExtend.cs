@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using XLua;
 
-[LuaCallCSharp]
 public static class TransformExtend
 {
     public static void SetLocalScale(this Transform self, float x, float y, float z)

@@ -16,16 +16,22 @@ end
 function BaseRender:SetInstance(instance)
 	-- UI根节点，支持instance是GameObject或者U3DObject
 	if type(instance) == "userdata" then
+		print(type(instance))
 		self.root_node = U3DObject(instance)
 	else
+		print(type(instance))
 		self.root_node = instance
 	end
 
-	self.name_table = instance:GetComponent(typeof(NameTable))			-- 名字绑定
-	self.event_table = instance:GetComponent(typeof(EventTable))		-- 事件绑定
-	self.variable_table = instance:GetComponent(typeof(VariableTable))	-- 变量绑定
+	self.name_table = instance:GetComponent(typeof(CS.NameTable))			-- 名字绑定
+	self.event_table = instance:GetComponent(typeof(CS.EventTable))			-- 事件绑定
+	self.variable_table = instance:GetComponent(typeof(CS.VariableTable))	-- 变量绑定
 
 	self:FlushHelper()
+end
+
+function BaseRender:SetInstanceParent(instance_parent)
+	self.root_node.transform:SetParent(instance_parent.transform, false)
 end
 
 -- 外部通知刷新 调用此接口

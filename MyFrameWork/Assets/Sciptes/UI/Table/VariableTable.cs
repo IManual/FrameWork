@@ -2,12 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using XLua;
 
 /// <summary>
 /// UI变量配置表
 /// </summary>
-[LuaCallCSharp]
 public class VariableTable : BaseBehaviour {
 
     /// <summary>
@@ -19,12 +17,12 @@ public class VariableTable : BaseBehaviour {
     /// <summary>
     /// 变量名字与变量类型的字典
     /// </summary>
-    public Dictionary<string, VariableTYPE> variableDic;
+    public Dictionary<string, UIVariableType> variableDic;
 
     protected override void Awake()
     {
         //根据变量参数数组里的数据为字典添加键值对
-        variableDic = new Dictionary<string, VariableTYPE>();
+        variableDic = new Dictionary<string, UIVariableType>();
         for (int i = 0; i < component.Length; i++)
         {
             variableDic.Add(component[i].name, component[i].type);

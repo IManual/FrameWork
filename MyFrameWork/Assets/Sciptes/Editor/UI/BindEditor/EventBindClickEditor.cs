@@ -10,10 +10,13 @@ public class EventBindClickEditor : Editor
     private void OnEnable()
     {
         bind = (EventBindClick)target;
-        bind.table = Tool.FindFather(bind.transform, a =>
+        if (bind.table == null)
         {
-            return a.GetComponent<EventTable>() != null;
-        }).GetComponent<EventTable>();
+            bind.table = Tool.FindFather(bind.transform, a =>
+            {
+                return a.GetComponent<EventTable>() != null;
+            }).GetComponent<EventTable>();
+        }
     }
 
     public override void OnInspectorGUI()

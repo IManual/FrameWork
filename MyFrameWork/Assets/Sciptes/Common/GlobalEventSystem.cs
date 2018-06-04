@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using XLua;
 
 /// <summary>
 /// 全局事件系统
 /// </summary>
-[LuaCallCSharp]
 public static class GlobalEventSystem {
 
     /// <summary>

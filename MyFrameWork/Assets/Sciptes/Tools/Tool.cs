@@ -11,7 +11,7 @@ public class Tool
     /// </summary>
     public static Transform FindFather(Transform target, Func<Transform,bool> func)
     {
-        if (target.parent == null)
+        if (func(target) || target.parent == null)
         {
             return target;
         }

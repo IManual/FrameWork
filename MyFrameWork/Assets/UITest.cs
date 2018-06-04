@@ -20,7 +20,7 @@ public class UITest : BaseBehaviour {
     protected override void Start () {
         UIVariable name = variableTable.FindVariable("ddddd");
         //print(name.name);
-        name.SetVlaue("测试一");
+        name.SetValue("测试一");
         cube = nameTable.FindObj("cube");
         cube.SetActive(false);
         

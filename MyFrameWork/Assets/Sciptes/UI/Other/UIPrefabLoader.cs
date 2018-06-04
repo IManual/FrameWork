@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using XLua;
 
 /// <summary>
 /// UI界面预制体的脚本

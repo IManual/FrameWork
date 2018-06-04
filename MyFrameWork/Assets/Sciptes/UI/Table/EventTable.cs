@@ -4,12 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
-using XLua;
 
 /// <summary>
 /// UI事件配置表
 /// </summary>
-[LuaCallCSharp]
 public class EventTable : BaseBehaviour {
 
     /// <summary>

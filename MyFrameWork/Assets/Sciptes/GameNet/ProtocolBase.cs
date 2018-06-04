@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ExitGames.Client.Photon;
-using XLua;
 
 public delegate void ProtocolHandler(Dictionary<byte, object> msg);
 
-[LuaCallCSharp]
 public abstract class ProtocolBase
 {
     public byte opCode;

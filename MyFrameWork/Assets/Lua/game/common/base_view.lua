@@ -258,6 +258,15 @@ function BaseView:PrefabLoadCallback(index, obj)
 	end
 end
 
+function BaseView:ChangeToIndex(index)
+	if not self:IsOpen() then
+		return
+	end
+
+	self:ShowIndex(index)
+	self:FlushHelper()
+end
+
 -- 切换标签
 function BaseView:ShowIndex(index)
 	if not self:IsLoaded() then
@@ -276,7 +285,7 @@ function BaseView:ShowIndex(index)
 	self.show_index = index
 	self.last_index = index
 
-	self.ShowIndexCallBack(index)
+	self:ShowIndexCallBack(index)
 end
 
 -- 初始化界面坐标 对已开启界面排序

@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using XLua;
 
 public delegate void CompleteEvent();
 
 public delegate void UpdateEvent(float t);
 
-[LuaCallCSharp]
 public class TimeControl : BaseBehaviour
 {
     bool isLog = true;

@@ -28,7 +28,7 @@ public class UIVariableDrawer : PropertyDrawer
             //variable_name
             nameProperty.stringValue = EditorGUI.TextField(nameRect, nameProperty.stringValue);
             //type_enum
-            gameProperty.intValue = (int)(VariableTYPE)EditorGUI.EnumPopup(gameRect, (VariableTYPE)gameProperty.enumValueIndex);
+            gameProperty.intValue = (int)(UIVariableType)EditorGUI.EnumPopup(gameRect, (UIVariableType)gameProperty.enumValueIndex);
         }
     }
 }
