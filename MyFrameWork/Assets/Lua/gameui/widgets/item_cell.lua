@@ -5,8 +5,7 @@ function ItemCell:__init()
 
 	if nil == self.root_node then
 		-- 后期需修改
-		self.ui_config = {"uis/widgets", "ItemCell"}
-		local prefab = Resources.Load(self.ui_config[1].."/"..self.ui_config[2], typeof(GameObject))
+		local prefab = AssetLoaderManager.LoadAsset("uis/widgets", "ItemCell", typeof(GameObject))
 		local u3dobj = U3DObject(GameObject.Instantiate(prefab))
 		self:SetInstance(u3dobj)
 		self.is_use_objpool = true

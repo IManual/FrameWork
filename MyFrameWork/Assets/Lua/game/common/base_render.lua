@@ -23,9 +23,9 @@ function BaseRender:SetInstance(instance)
 		self.root_node = instance
 	end
 
-	self.name_table = instance:GetComponent(typeof(CS.NameTable))			-- 名字绑定
-	self.event_table = instance:GetComponent(typeof(CS.EventTable))			-- 事件绑定
-	self.variable_table = instance:GetComponent(typeof(CS.VariableTable))	-- 变量绑定
+	self.name_table = instance:GetComponent(typeof(CS.UINameTable))				-- 名字绑定
+	self.event_table = instance:GetComponent(typeof(CS.UIEventTable))			-- 事件绑定
+	self.variable_table = instance:GetComponent(typeof(CS.UIVariableTable))		-- 变量绑定
 
 	self:FlushHelper()
 end

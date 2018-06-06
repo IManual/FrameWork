@@ -212,7 +212,7 @@ function BaseView:Load(index)
 	if self.is_async_load then
 		-- 异步加载资源
 		print_log(self.ui_config[1].."/"..self.ui_config[2])
-		obj = Resources.Load(self.ui_config[1].."/"..self.ui_config[2], typeof(GameObject))
+		obj = AssetLoaderManager.LoadAsset(self.ui_config[1], self.ui_config[2], typeof(GameObject))
 		self:PrefabLoadCallback(index, obj)
 	else
 
@@ -232,9 +232,9 @@ function BaseView:PrefabLoadCallback(index, obj)
 	self.is_loading = false
 
 	self.root_node = obj
-	self.name_table = self.root_node:GetComponent(typeof(CS.NameTable))
-	self.event_table = self.root_node:GetComponent(typeof(CS.EventTable))
-	self.variable_table = self.root_node:GetComponent(typeof(CS.VariableTable))
+	self.name_table = self.root_node:GetComponent(typeof(CS.UINameTable))
+	self.event_table = self.root_node:GetComponent(typeof(CS.UIEventTable))
+	self.variable_table = self.root_node:GetComponent(typeof(CS.UIVariableTable))
 	self.animator = self.root_node:GetComponent(typeof(CS.UnityEngine.Animator))
 
 	local transform = self.root_node.transform

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum UIVariableType
 {
-    Bollean,
+    Boolean,
     Interger,
     Float,
     String,

@@ -33,9 +33,9 @@ public static class LuaGenConfig
         typeof(GameNet),
         typeof(ProtocolBase),
 
-        typeof(EventTable),
-        typeof(NameTable),
-        typeof(VariableTable),
+        typeof(UIEventTable),
+        typeof(UINameTable),
+        typeof(UIVariableTable),
 
         typeof(TransformExtend),
         typeof(ToggleExtend),
@@ -45,6 +45,8 @@ public static class LuaGenConfig
         typeof(ListViewCell),
         typeof(ListViewSimpleDelegate),
         typeof(UIPrefabLoader),
+
+        typeof(AssetLoaderManager),
     };
 
     [CSharpCallLua]
