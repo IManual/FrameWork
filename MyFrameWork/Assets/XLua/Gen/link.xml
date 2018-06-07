@@ -60,6 +60,7 @@
 		<type fullname="TimeControl" preserve="all"/>
 		<type fullname="GameNet" preserve="all"/>
 		<type fullname="ProtocolBase" preserve="all"/>
+		<type fullname="AssetLoaderManager" preserve="all"/>
 		<type fullname="UIEventTable" preserve="all"/>
 		<type fullname="UINameTable" preserve="all"/>
 		<type fullname="UIVariableTable" preserve="all"/>
@@ -70,7 +71,7 @@
 		<type fullname="ListViewCell" preserve="all"/>
 		<type fullname="ListViewSimpleDelegate" preserve="all"/>
 		<type fullname="UIPrefabLoader" preserve="all"/>
-		<type fullname="AssetLoaderManager" preserve="all"/>
+		<type fullname="Joystick" preserve="all"/>
 		<type fullname="LuaBehaviour" preserve="all"/>
 		<type fullname="XLuaTest.Pedding" preserve="all"/>
 		<type fullname="XLuaTest.MyStruct" preserve="all"/>

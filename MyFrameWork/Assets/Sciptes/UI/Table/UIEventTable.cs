@@ -66,6 +66,7 @@ public class UIEventTable : BaseBehaviour {
     /// </summary>
     public void ClearEvent(string eventName)
     {
+        Debug.Log(eventName);
         if (eventDic.ContainsKey(eventName))
         {
             eventDic.Remove(eventName);

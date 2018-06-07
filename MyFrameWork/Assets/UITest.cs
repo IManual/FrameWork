@@ -14,6 +14,7 @@ public class UITest : BaseBehaviour {
 
     protected override void Start()
     {
+        
     }
 }
 

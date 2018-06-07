@@ -102,9 +102,7 @@ public class UIVariableBindText : UIVariableBind
 
     //脚本挂载时调用
     public override void BindVariables()
-    {
-        Debug.Log("BindVariable");
-        Assert.IsNull<UIVariable[]>(this.variableList);
+    {        
         if (this.paramBinds != null && this.paramBinds.Length > 0)
         {
             this.variableList = new UIVariable[this.paramBinds.Length];

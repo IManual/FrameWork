@@ -58,7 +58,7 @@ public static class AssetLoaderManager
     private static string GetAssetPath(string bundleName, string assetName)
     {
         string path = null;
-        string[] assetPathFromAssetBundleAndAssetName =  AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(bundleName, Path.GetFileNameWithoutExtension(assetName));
+        string[] assetPathFromAssetBundleAndAssetName = AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(bundleName, Path.GetFileNameWithoutExtension(assetName));
         if (Path.HasExtension(assetName))
         {
             string extension = Path.GetExtension(assetName);
@@ -72,7 +72,7 @@ public static class AssetLoaderManager
                 }
             }
         }
-        else if(assetPathFromAssetBundleAndAssetName.Length > 0)
+        else if (assetPathFromAssetBundleAndAssetName.Length > 0)
         {
             path = assetPathFromAssetBundleAndAssetName[0];
         }

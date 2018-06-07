@@ -63,6 +63,8 @@ namespace XLua.CSObjectWrap
 				
 				translator.DelayWrapLoader(typeof(ProtocolBase), ProtocolBaseWrap.__Register);
 				
+				translator.DelayWrapLoader(typeof(AssetLoaderManager), AssetLoaderManagerWrap.__Register);
+				
 				translator.DelayWrapLoader(typeof(UIEventTable), UIEventTableWrap.__Register);
 				
 				translator.DelayWrapLoader(typeof(UINameTable), UINameTableWrap.__Register);
@@ -83,7 +85,7 @@ namespace XLua.CSObjectWrap
 				
 				translator.DelayWrapLoader(typeof(UIPrefabLoader), UIPrefabLoaderWrap.__Register);
 				
-				translator.DelayWrapLoader(typeof(AssetLoaderManager), AssetLoaderManagerWrap.__Register);
+				translator.DelayWrapLoader(typeof(Joystick), JoystickWrap.__Register);
 				
 				translator.DelayWrapLoader(typeof(LuaBehaviour), LuaBehaviourWrap.__Register);
 				

@@ -32,6 +32,7 @@ public static class LuaGenConfig
         typeof(TimeControl),
         typeof(GameNet),
         typeof(ProtocolBase),
+        typeof(AssetLoaderManager),
 
         typeof(UIEventTable),
         typeof(UINameTable),
@@ -46,7 +47,7 @@ public static class LuaGenConfig
         typeof(ListViewSimpleDelegate),
         typeof(UIPrefabLoader),
 
-        typeof(AssetLoaderManager),
+        typeof(Joystick),
     };
 
     [CSharpCallLua]
@@ -56,6 +57,7 @@ public static class LuaGenConfig
         typeof(Action<GameObject>),
         typeof(System.Collections.IEnumerator),
         typeof(Action<UIVariable>),
+        typeof(Action<Vector2>),
 
         typeof(ListViewSimpleDelegate.NumberOfCellsDelegate),
         typeof(ListViewSimpleDelegate.CellRefreshDelegate),

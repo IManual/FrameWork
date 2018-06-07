@@ -94,6 +94,14 @@ function BaseRender:FindObj(name_path)
 	return nil
 end
 
+-- 清空指定事件
+function BaseRender:ClearEvent(eventName)
+	if self.event_table == nil then
+		return
+	end
+	--self.event_table:ClearEvent(eventName)
+end
+
 -- 监听指定的事件
 -- eventName；事件名
 -- listener；监听回调

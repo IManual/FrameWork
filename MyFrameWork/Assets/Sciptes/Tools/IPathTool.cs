@@ -8,7 +8,7 @@ using UnityEngine;
 public class IPathTool {
 
     /// <summary>
-    /// 获取当前build平台
+    /// 获取当前运行平台
     /// </summary>
     /// <param name="platform"></param>
     /// <returns></returns>

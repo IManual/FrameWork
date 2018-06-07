@@ -56,9 +56,6 @@ GameObject:
   - component: {fileID: 224539947816213692}
   - component: {fileID: 114913678402617268}
   - component: {fileID: 114476560396044252}
-  - component: {fileID: 222693316160167396}
-  - component: {fileID: 114660352290024474}
-  - component: {fileID: 114550571726652704}
   m_Layer: 5
   m_Name: ItemCell
   m_TagString: Untagged
@@ -142,7 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03c95e9790bc718468d1defa514da882, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  variableTable: {fileID: 114550571726652704}
+  variableTable: {fileID: 0}
   format: 
   paramBinds:
   - null
@@ -169,62 +166,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8657a50b30c540642af21f8cef0a32c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  events: []
---- !u!114 &114550571726652704
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1697456671877030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2144a5a61e8e4e34eac2f1c83c170c3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  variables:
-  - name: num
-    type: 3
-    booleanValue: 0
-    intergerValue: 0
-    floatValue: 0
-    stringValue: 
-    assetValue:
-      bundleName: 
-      assetName: 
-      assetGUID: 
---- !u!114 &114660352290024474
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1697456671877030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
-    m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 40
-    m_Alignment: 0
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: dddddddd
+  events:
+  - eventName: Click
+    btnObj: {fileID: 0}
 --- !u!114 &114661651574636208
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -374,7 +318,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 114660352290024474}
+  m_TargetGraphic: {fileID: 0}
   toggleTransition: 1
   graphic: {fileID: 114990136227301486}
   m_Group: {fileID: 0}
@@ -429,12 +373,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1134044607437096}
---- !u!222 &222693316160167396
-CanvasRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1697456671877030}
 --- !u!222 &222801558795435298
 CanvasRenderer:
   m_ObjectHideFlags: 1
