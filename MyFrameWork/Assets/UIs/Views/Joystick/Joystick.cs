@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Joystick : ScrollRect
+public class Joystick : ScrollRect,IPointerEnterHandler,IPointerUpHandler
 {
 
     [Tooltip("滑动半径"), SerializeField]
@@ -75,8 +75,6 @@ public class Joystick : ScrollRect
             //如果在屏幕上进行了滑动
             Debug.Log(nowPosition); //nowPosition以屏幕左下角为原点坐标
             transform.position = new Vector3(nowPosition.x, nowPosition.y, 0);
-            
-            isDrag = false;
         }
         if (isDragJostick)
         {
@@ -128,6 +126,19 @@ public class Joystick : ScrollRect
         direcCanvasGroup.alpha = 0;
         base.OnEndDrag(eventData);
         isDragJostick = false;
-        transform.position = new Vector2(lastPosition.x, lastPosition.y);
+        //transform.position = new Vector2(lastPosition.x, lastPosition.y);
+        eventData.pointerDrag = null;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (!isDrag) return;
+        eventData.pointerDrag = this.gameObject;
+        isDrag = false;
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        eventData.pointerDrag = null;
     }
 }
