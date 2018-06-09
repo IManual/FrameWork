@@ -65,6 +65,8 @@ namespace XLua.CSObjectWrap
 				
 				translator.DelayWrapLoader(typeof(AssetLoaderManager), AssetLoaderManagerWrap.__Register);
 				
+				translator.DelayWrapLoader(typeof(LogForLua), LogForLuaWrap.__Register);
+				
 				translator.DelayWrapLoader(typeof(UIEventTable), UIEventTableWrap.__Register);
 				
 				translator.DelayWrapLoader(typeof(UINameTable), UINameTableWrap.__Register);

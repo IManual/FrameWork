@@ -73,9 +73,10 @@ public class Joystick : ScrollRect,IPointerEnterHandler,IPointerUpHandler
         if (isDrag)
         {
             //如果在屏幕上进行了滑动
-            Debug.Log(nowPosition); //nowPosition以屏幕左下角为原点坐标
+            //Debug.Log(nowPosition); //nowPosition以屏幕左下角为原点坐标
             transform.position = new Vector3(nowPosition.x, nowPosition.y, 0);
         }
+
         if (isDragJostick)
         {
             //Debug.Log("[" + content.anchoredPosition.x + "," + content.anchoredPosition.y + "]");
@@ -104,7 +105,7 @@ public class Joystick : ScrollRect,IPointerEnterHandler,IPointerUpHandler
     public override void OnBeginDrag(PointerEventData eventData)
     {
         isDragJostick = true;
-        content.anchoredPosition = eventData.pressPosition;
+        //content.anchoredPosition = eventData.pressPosition;
         base.OnBeginDrag(eventData);
 
     }
@@ -126,7 +127,8 @@ public class Joystick : ScrollRect,IPointerEnterHandler,IPointerUpHandler
         direcCanvasGroup.alpha = 0;
         base.OnEndDrag(eventData);
         isDragJostick = false;
-        //transform.position = new Vector2(lastPosition.x, lastPosition.y);
+
+        transform.position = new Vector2(lastPosition.x, lastPosition.y);
         eventData.pointerDrag = null;
     }
 

@@ -11,6 +11,7 @@ GlobalEventSystem = CS.GlobalEventSystem				-- 全局事件系统
 TimeControl = CS.TimeControl							-- 计时器
 GlobalTimeRequest = CS.GlobalTimeRequest      			-- 倒计时工具
 AssetLoaderManager = CS.AssetLoaderManager				-- 资源加载工具
+LogForLua = CS.LogForLua								-- Log工具
 
 function GameStart()
 	print("GameStart")

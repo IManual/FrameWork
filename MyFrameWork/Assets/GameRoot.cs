@@ -14,8 +14,6 @@ public class GameRoot : MonoSingleton<GameRoot>
     {
         luaMnager = new LuaManager();
         luaMnager.InitStart("utils/main");
-        //初始化ctrl
-        //MVCEntry.__init();
 
         // 监听低内存更新
         Application.lowMemory -= this.OnLowMemory;

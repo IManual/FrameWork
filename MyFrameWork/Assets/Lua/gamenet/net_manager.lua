@@ -1,7 +1,7 @@
 NetManager = NetManager or BaseClass()
 
 function NetManager:__init()
-	if NetManager.Instance ~= null then
+	if NetManager.Instance ~= nil then
 		print_error("[NetManager] try to instance twice!")
 	end
 	NetManager.Instance = self

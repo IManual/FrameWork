@@ -4,6 +4,8 @@ local lua_file_list ={
 	"systool/systool",
 
 	"utils/util",
+	"utils/json",
+	"utils/userdata",
 
 	"gamenet/msgadapter",
 	"gamenet/net_manager",

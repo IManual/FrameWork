@@ -33,6 +33,7 @@ public static class LuaGenConfig
         typeof(GameNet),
         typeof(ProtocolBase),
         typeof(AssetLoaderManager),
+        typeof(LogForLua),
 
         typeof(UIEventTable),
         typeof(UINameTable),
