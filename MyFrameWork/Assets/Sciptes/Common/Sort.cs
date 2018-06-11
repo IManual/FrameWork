@@ -26,37 +26,137 @@ public static class Sort
         if (i + 1 < right) QuickSort(array, i + 1, right);
     }
 
-    public class Node
-    {
-        public Node leftChild;
-
-        public Node rightChild;
-
-        public void Visit()
-        {
-
-        }
-    }
-
+    //                  A
+    //        B                    C
+    //  D           E      F            G
+    //先序：ABDECFG
+    //
     public static void PreOder(Node node)
     {
         Stack stack = new Stack();
         Node node_pop;
         Node current = node;
         //如果当前节点不为空 或者栈中有元素
-        while (current != null || stack.Count > 0)
+        while (current != null)
         { 
             //入栈
             stack.Push(current);
-
+            current.Visit();
             current = current.leftChild;
-            //如果左孩子不为空 且 栈不为空
-            while (current!= null && stack.Count > 0)
-            {     
+            //如果当前节点没有左节点了 且栈中有元素 开始出栈
+            while (current == null && stack.Count > 0)
+            {
                 node_pop = stack.Pop() as Node;
-                //同时设置其右孩子为当前节点 循环判断 直到current为空
-                current = current.rightChild;
+                //如果当前节点的右节点不为空 跳回第一层 先输出 继续查找左节点
+                current = node_pop.rightChild;
             }
         }
+    }
+
+    //                  A
+    //        B                    C
+    //  D           E      F            G
+    //中序：DBEAFCG
+    //
+    public static void MidOder(Node node)
+    {
+        Stack stack = new Stack();
+        Node node_pop;
+        Node current = node;
+        //如果当前节点不为空 或者栈中有元素
+        while (current != null)
+        {
+            //入栈
+            stack.Push(current);
+            current = current.leftChild;
+            //如果当前节点没有左节点了 且栈中有元素 开始出栈
+            while (current == null && stack.Count > 0)
+            {
+                node_pop = stack.Pop() as Node;
+                node_pop.Visit();
+                //如果当前节点的右节点不为空 跳回第一层 先输出 继续查找左节点
+                current = node_pop.rightChild;
+            }
+        }
+    }
+
+    //                  A
+    //        B                    C
+    //  D           E      F            G
+    //     H
+    //后序：HDEBFGCA
+    //
+    public static void LaterOder(Node node)
+    {
+        Dictionary<string, int> times = new Dictionary<string, int>();
+        Stack stack = new Stack();
+        Node node_pop;
+        Node current = node;
+        //如果当前节点不为空 或者栈中有元素
+        while (current != null)
+        {
+            if (times.ContainsKey(current.name))
+            {
+                int value;
+                times.TryGetValue(current.name, out value);
+                times[current.name] = value + 1;
+            }
+            else
+            {
+                times[current.name] = 1;
+            }
+            //入栈
+            stack.Push(current);
+            current = current.leftChild;
+            //如果当前节点没有左节点了 且栈中有元素 开始出栈
+            while (current == null && stack.Count > 0)
+            {
+                node_pop = stack.Pop() as Node;
+                if (times.ContainsKey(node_pop.name))
+                {
+                    int value;
+                    times.TryGetValue(node_pop.name, out value);
+                    times[node_pop.name] = value + 1;
+                }
+                else
+                {
+                    times[node_pop.name] = 1;
+                }
+                if (times[node_pop.name] == 3)
+                {
+                    node_pop.Visit();
+                    node_pop = stack.Pop() as Node;
+                    node_pop = stack.Pop() as Node;
+                }
+                //如果当前节点的右节点不为空 跳回第一层 先输出 继续查找左节点
+                current = node_pop.rightChild;
+                if (current == null)
+                {
+                    node_pop.Visit();
+                }
+                else
+                {
+                    stack.Push(node_pop);
+                }
+            }
+        }
+    }
+}
+
+public class Node
+{
+    public string name;
+
+    public Node(string name)
+    {
+        this.name = name;
+    }
+    public Node leftChild;
+
+    public Node rightChild;
+
+    public void Visit()
+    {
+        Debug.Log(name);
     }
 }

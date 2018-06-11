@@ -58,7 +58,9 @@ public static class AssetLoaderManager
     private static string GetAssetPath(string bundleName, string assetName)
     {
         string path = null;
+        //获取资源路径  所有同名资源
         string[] assetPathFromAssetBundleAndAssetName = AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(bundleName, Path.GetFileNameWithoutExtension(assetName));
+        //如果资源名包含后缀  根据后缀找到对应资源的路径
         if (Path.HasExtension(assetName))
         {
             string extension = Path.GetExtension(assetName);

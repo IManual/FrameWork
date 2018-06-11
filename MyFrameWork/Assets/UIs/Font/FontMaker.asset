@@ -15,5 +15,15 @@ MonoBehaviour:
   padding: 1
   maximumAtlasSize: 2048
   fonts:
-  - fontName: 
-    glyphs: []
+  - fontName: ddd
+    glyphs:
+    - code: 0
+      image: {fileID: 2800000, guid: 07e9b533150f4564381a571f8800f4f7, type: 3}
+    - code: 0
+      image: {fileID: 0}
+    - code: 0
+      image: {fileID: 0}
+    - code: 0
+      image: {fileID: 0}
+    - code: 0
+      image: {fileID: 0}
