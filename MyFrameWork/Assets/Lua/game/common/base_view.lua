@@ -211,7 +211,7 @@ function BaseView:Load(index)
 	local request_id = LoadingPriorityManager.Instance:RequestPriority(LoadingPriority.High)
 	if self.is_async_load then
 		-- 异步加载资源
-		print_log(self.ui_config[1].."/"..self.ui_config[2])
+		print(self.ui_config[1].."/"..self.ui_config[2])
 		obj = AssetLoaderManager.LoadAsset(self.ui_config[1], self.ui_config[2], typeof(GameObject))
 		self:PrefabLoadCallback(index, obj)
 	else
@@ -278,7 +278,7 @@ function BaseView:ShowIndex(index)
 	end
 
 	if nil == index then
-		print_log("BaseView:ShowIndex index == nil")
+		print("BaseView:ShowIndex index == nil")
 		return
 	end
 

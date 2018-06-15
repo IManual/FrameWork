@@ -11,6 +11,7 @@ public class UIVariableTableEditor : Editor
 
     private void OnEnable()
     {
+        //当前table对象
         var table = (UIVariableTable)target;
 
         var prop = serializedObject.FindProperty("variables");

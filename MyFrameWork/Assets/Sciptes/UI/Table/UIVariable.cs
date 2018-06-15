@@ -8,8 +8,10 @@ using UnityEngine;
 /// 变量表单个变量
 /// </summary>
 [Serializable]
-public class UIVariable:PropertyAttribute
+public class UIVariable
 {
+    #region Property
+
     /// <summary>
     /// 变量名
     /// </summary>
@@ -34,16 +36,25 @@ public class UIVariable:PropertyAttribute
     [SerializeField]
     private AssetID assetValue;
 
-    private List<UIVariableBind> variableBindList = new List<UIVariableBind>();
+    #endregion
 
+    /// <summary>
+    /// 当前变量所绑定的bind脚本列表
+    /// </summary>
+    //private List<UIVariableBind> variableBindList = new List<UIVariableBind>();
+
+    //值改变回调
     private Action onValueChange;
 
+    //值初始化回调
     private Action onValueInitialized;
 
-    [CompilerGenerated]
-    private static Predicate<UIVariableBind> bindList;
+    //[CompilerGenerated]
+    //private static Predicate<UIVariableBind> bindList;
 
-    //变量改变
+    /// <summary>
+    /// 变量改变
+    /// </summary>
     public event Action OnValueChanged
     {
         // add remove事件访问器
@@ -59,7 +70,9 @@ public class UIVariable:PropertyAttribute
         }
     }
 
-    //变量赋值
+    /// <summary>
+    /// 变量初始化
+    /// </summary>
     public event Action OnValueInitialized
     {
         [MethodImpl(MethodImplOptions.Synchronized)]
@@ -74,11 +87,17 @@ public class UIVariable:PropertyAttribute
         }
     }
 
+    /// <summary>
+    /// 当前变量的变量名
+    /// </summary>
     public string Name
     {
         get { return this.name; }
     }
 
+    /// <summary>
+    /// 当前变量的类型
+    /// </summary>
     public UIVariableType Type
     {
         get
@@ -87,6 +106,9 @@ public class UIVariable:PropertyAttribute
         }
     }
 
+    /// <summary>
+    /// 当前变量的值
+    /// </summary>
     public object ValueObject
     {
         //根据当前类型  返回所对应的值
@@ -110,13 +132,7 @@ public class UIVariable:PropertyAttribute
         }
     }
 
-    public ICollection<UIVariableBind> Binds
-    {
-        get
-        {
-            return this.variableBindList;
-        }
-    }
+    #region GetValue
 
     public bool GetBoolean()
     {
@@ -142,6 +158,10 @@ public class UIVariable:PropertyAttribute
     {
         return this.assetValue;
     }
+
+    #endregion
+
+    #region InitValue
 
     public void InitBoolean(bool value)
     {
@@ -176,42 +196,6 @@ public class UIVariable:PropertyAttribute
         {
             this.stringValue = value;
             this.ValueInitialized();
-        }
-    }
-
-    public void SetBoolean(bool value)
-    {
-        if (this.booleanValue != value)
-        {
-            this.booleanValue = value;
-            this.ValueChange();
-        }
-    }
-
-    public void SetInteger(long value)
-    {
-        if (this.intergerValue != value)
-        {
-            this.intergerValue = value;
-            this.ValueChange();
-        }
-    }
-
-    public void SetFloat(float value)
-    {
-        if (this.floatValue != value)
-        {
-            this.floatValue = value;
-            this.ValueChange();
-        }
-    }
-
-    public void SetString(string value)
-    {
-        if (this.stringValue != value)
-        {
-            this.stringValue = value;
-            this.ValueChange();
         }
     }
 
@@ -288,6 +272,46 @@ public class UIVariable:PropertyAttribute
             case UIVariableType.String:
                 this.InitString(value);
                 break;
+        }
+    }
+
+    #endregion
+
+    #region SetValue
+
+    public void SetBoolean(bool value)
+    {
+        if (this.booleanValue != value)
+        {
+            this.booleanValue = value;
+            this.ValueChange();
+        }
+    }
+
+    public void SetInteger(long value)
+    {
+        if (this.intergerValue != value)
+        {
+            this.intergerValue = value;
+            this.ValueChange();
+        }
+    }
+
+    public void SetFloat(float value)
+    {
+        if (this.floatValue != value)
+        {
+            this.floatValue = value;
+            this.ValueChange();
+        }
+    }
+
+    public void SetString(string value)
+    {
+        if (this.stringValue != value)
+        {
+            this.stringValue = value;
+            this.ValueChange();
         }
     }
 
@@ -381,23 +405,7 @@ public class UIVariable:PropertyAttribute
         }
     }
 
-    public void ResetAsset()
-    {
-        this.SetAsset(AssetID.Empty);
-    }
-
-    public void AddBind(UIVariableBind bind)
-    {
-        if (this.variableBindList.IndexOf(bind) == -1)
-        {
-            this.variableBindList.Add(bind);
-        }
-    }
-
-    public void RemoveBind(UIVariableBind bind)
-    {
-        this.variableBindList.Remove(bind);
-    }
+    #endregion
 
     internal void ValueChange()
     {
@@ -415,56 +423,80 @@ public class UIVariable:PropertyAttribute
         }
     }
 
-    internal void Fun0()
+    /// <summary>
+    /// 重置asset
+    /// </summary>
+    public void ResetAsset()
     {
-        List<UIVariableBind> arg_23_0 = this.variableBindList;
-        if (UIVariable.bindList == null)
-        {
-            UIVariable.bindList = new Predicate<UIVariableBind>(UIVariable.IsNull);
-        }
-        arg_23_0.RemoveAll(UIVariable.bindList);
+        this.SetAsset(AssetID.Empty);
     }
 
-    internal void Fun()
-    {
-        switch (this.type)
-        {
-            case UIVariableType.Boolean:
-                this.intergerValue = 0L;
-                this.floatValue = 0f;
-                this.stringValue = null;
-                this.assetValue = default(AssetID);
-                break;
-            case UIVariableType.Interger:
-                this.booleanValue = false;
-                this.floatValue = 0f;
-                this.stringValue = null;
-                this.assetValue = default(AssetID);
-                break;
-            case UIVariableType.Float:
-                this.intergerValue = 0L;
-                this.booleanValue = false;
-                this.stringValue = null;
-                this.assetValue = default(AssetID);
-                break;
-            case UIVariableType.String:
-                this.intergerValue = 0L;
-                this.floatValue = 0f;
-                this.assetValue = default(AssetID);
-                break;
-            case UIVariableType.Asset:
-                this.intergerValue = 0L;
-                this.floatValue = 0f;
-                this.stringValue = null;
-                this.booleanValue = false;
-                break;
-        }
-    }
+    #region 多余代码
+    //public void AddBind(UIVariableBind bind)
+    //{
+    //    if (this.variableBindList.IndexOf(bind) == -1)
+    //    {
+    //        this.variableBindList.Add(bind);
+    //    }
+    //}
 
-    [CompilerGenerated]
-    private static bool IsNull(UIVariableBind uIVariableBind)
-    {
-        return uIVariableBind == null;
-    }
+    //public void RemoveBind(UIVariableBind bind)
+    //{
+    //    this.variableBindList.Remove(bind);
+    //}
+
+    //internal void Fun0()
+    //{
+    //    List<UIVariableBind> arg_23_0 = this.variableBindList;
+    //    if (UIVariable.bindList == null)
+    //    {
+    //        UIVariable.bindList = new Predicate<UIVariableBind>(UIVariable.IsNull);
+    //    }
+    //    arg_23_0.RemoveAll(UIVariable.bindList);
+    //}
+
+    //internal void Fun()
+    //{
+    //    switch (this.type)
+    //    {
+    //        case UIVariableType.Boolean:
+    //            this.intergerValue = 0L;
+    //            this.floatValue = 0f;
+    //            this.stringValue = null;
+    //            this.assetValue = default(AssetID);
+    //            break;
+    //        case UIVariableType.Interger:
+    //            this.booleanValue = false;
+    //            this.floatValue = 0f;
+    //            this.stringValue = null;
+    //            this.assetValue = default(AssetID);
+    //            break;
+    //        case UIVariableType.Float:
+    //            this.intergerValue = 0L;
+    //            this.booleanValue = false;
+    //            this.stringValue = null;
+    //            this.assetValue = default(AssetID);
+    //            break;
+    //        case UIVariableType.String:
+    //            this.intergerValue = 0L;
+    //            this.floatValue = 0f;
+    //            this.assetValue = default(AssetID);
+    //            break;
+    //        case UIVariableType.Asset:
+    //            this.intergerValue = 0L;
+    //            this.floatValue = 0f;
+    //            this.stringValue = null;
+    //            this.booleanValue = false;
+    //            break;
+    //    }
+    //}
+
+
+    //[CompilerGenerated]
+    //private static bool IsNull(UIVariableBind uIVariableBind)
+    //{
+    //    return uIVariableBind == null;
+    //}
+    #endregion
 }
 

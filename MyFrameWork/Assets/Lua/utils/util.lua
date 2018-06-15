@@ -28,11 +28,7 @@ function Split(split_string, splitter)
 	return split_result
 end
 
-function print_log(msg)
-	print(msg)
-end
-
-function print_error(msg)	
+function print_error(msg)
 	local str = ""
 	local info = ""
 	str = debug.traceback()

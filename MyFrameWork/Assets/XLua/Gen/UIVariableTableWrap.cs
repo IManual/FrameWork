@@ -180,7 +180,6 @@ namespace XLua.CSObjectWrap
                 
                 {
                     
-                    gen_to_be_invoked.Sort(  );
                     
                     
                     

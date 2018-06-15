@@ -17,9 +17,6 @@ public class UIVariableTable : BaseBehaviour {
     //变量名字与变量的字典
     public Dictionary<string, UIVariable> variableDic;
 
-    [CompilerGenerated]
-    private static Comparison<UIVariable> compairson;
-
     public UIVariable[] Variables
     {
         get
@@ -88,18 +85,7 @@ public class UIVariableTable : BaseBehaviour {
         return array;
     }
 
-    //将变量集合排序
-    public void Sort()
-    {
-        UIVariable[] arg_23_0 = this.variables;
-        if (UIVariableTable.compairson == null)
-        {
-            UIVariableTable.compairson = new Comparison<UIVariable>(UIVariableTable.Compairson);
-        }
-        Array.Sort<UIVariable>(arg_23_0, UIVariableTable.compairson);
-    }
-
-    //初始化绑定
+    //初始化绑定  游戏运行时调用
     public void InitializeBinds()
     {
         UIVariableTable.ActivateSelfBind(base.transform);
@@ -149,11 +135,5 @@ public class UIVariableTable : BaseBehaviour {
     protected override void Awake()
     {
         UIVariableTable.ActivateSelfBind(transform);
-    }
-
-    //比较依据
-    private static int Compairson(UIVariable uIVariable, UIVariable uIVariable2)
-    {
-        return uIVariable.Name.CompareTo(uIVariable2.Name);
     }
 }

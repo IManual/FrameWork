@@ -15,17 +15,26 @@ public abstract class UIVariableBind : BaseBehaviour {
     [SerializeField, Tooltip("The variable table for this bind.")]
     public UIVariableTable variableTable;
 
+    /// <summary>
+    /// 是否开始运行
+    /// </summary>
     private bool start;
 
-    [CompilerGenerated]
-    private UIVariableTable table;
+    //[CompilerGenerated]
+    //private UIVariableTable table;
 
+    /// <summary>
+    /// 当前绑定的variableTable
+    /// </summary>
     public UIVariableTable VariableTable
     {
         get;
         private set;
     }
 
+    /// <summary>
+    /// 游戏启动时 table进行一次调用 当前脚本挂载时也调用一次
+    /// </summary>
     internal void Init()
     {
         if (!start)
@@ -36,6 +45,11 @@ public abstract class UIVariableBind : BaseBehaviour {
         }
     }
 
+    /// <summary>
+    /// table提供的根据变量名查找变量
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
     public UIVariable FindVariable(string name)
     {
         if (string.IsNullOrEmpty(name))
@@ -49,17 +63,25 @@ public abstract class UIVariableBind : BaseBehaviour {
         return null;
     }
 
+    /// <summary>
+    /// 挂载当前脚本的物体销毁时调用子类unbind
+    /// </summary>
     protected override void OnDestroy()
     {
         this.UnbindVariables();
         this.start = false;
     }
 
+    /// <summary>
+    /// 子类重写 分别在界面创建打开时  销毁时调用
+    /// </summary>
     public abstract void BindVariables();
 
     public abstract void UnbindVariables();
 
-    //挂载后开始运行
+    /// <summary>
+    /// 挂载后开始运行
+    /// </summary>
     protected override void Awake()
     {
         this.Init();

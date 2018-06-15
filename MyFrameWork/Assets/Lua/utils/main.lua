@@ -54,7 +54,7 @@ function AddToUpdate(func)
 	if type(func) == "function" then
 		table.insert(updat_request_list, func)
 	else
-		print_log("func is not a type of function")
+		print("func is not a type of function")
 	end
 end
 

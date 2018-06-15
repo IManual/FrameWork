@@ -20,9 +20,6 @@ function MainUIView:LoadCallBack()
 	self.tab_2 = self:FindObj("Tab2")
 	self.tab_3 = self:FindObj("Tab3")
 
-	test = {"dsdasd","dasdsadsad","32321","12321"}
-	print_error(test)
-
 	self.tab_1.toggle:AddValueChangedListener(BindTool.Bind(self.OnTabValueChange, self, TabIndex.Tab1))
 	self.tab_2.toggle:AddValueChangedListener(BindTool.Bind(self.OnTabValueChange, self, TabIndex.Tab2))
 	self.tab_3.toggle:AddValueChangedListener(BindTool.Bind(self.OnTabValueChange, self, TabIndex.Tab3))
