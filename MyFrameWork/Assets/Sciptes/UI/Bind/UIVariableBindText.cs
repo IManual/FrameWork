@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-[AddComponentMenu("Nirvana/UI/Bind/Variable Bind Text"), RequireComponent(typeof(Text))]
+[AddComponentMenu("UI/Bind/Variable Bind Text"), RequireComponent(typeof(Text))]
 public class UIVariableBindText : UIVariableBind
 {
     /// <summary>
@@ -161,10 +161,6 @@ public class UIVariableBindText : UIVariableBind
                         this.variableList[i] = uIVariable;
                     }
                 }
-                else
-                {
-                    
-                }
             }
             //刷新一次text
             this.SetFormat();
@@ -176,7 +172,6 @@ public class UIVariableBindText : UIVariableBind
     /// </summary>
     public override void UnbindVariables()
     {
-        Debug.Log("UnbindVariables");
         if (this.variableList != null)
         {
             UIVariable[] array = this.variableList;

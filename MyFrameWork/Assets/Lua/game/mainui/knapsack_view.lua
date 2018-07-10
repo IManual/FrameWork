@@ -1,6 +1,6 @@
 KnapsackView = KnapsackView or BaseClass(BaseRender)
 
-local ItemCellCount = 5
+local ItemCellCount = 40
 function KnapsackView:__init()
 	self.contain_cell_list = {}
 	self.list_view = self:FindObj("ListView")
@@ -66,7 +66,7 @@ end
 function KnapsackCell:OnFlush()
 	self.index = self:GetIndex()
 	for i = 1, 5 do
-		-- self.item_cell_list[i]:SetNum(5 * i - 4)
+		self.item_cell_list[i]:SetNum(5 * i - 4)
 	end
 end
 

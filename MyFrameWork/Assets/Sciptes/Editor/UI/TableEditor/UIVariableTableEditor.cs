@@ -39,19 +39,22 @@ public class UIVariableTableEditor : Editor
         serializedObject.Update();      //更新对象最新数据
         table.FlushVariableDic();
         repeatList.Clear();
-        for (int i = 0; i < table.Variables.Length; i++)
+        //标记重复的变量
+        if (table.Variables != null)
         {
-            if (table.GetRepeatVariable().Contains(table.Variables[i].Name))
+            for (int i = 0; i < table.Variables.Length; i++)
             {
-                repeatList.Add(i);
+                if (table.GetRepeatVariable().Contains(table.Variables[i].Name))
+                {
+                    repeatList.Add(i);
+                }
             }
+            list.drawElementBackgroundCallback = (rect, index, isActive, isFocused) =>
+            {
+                if (repeatList.Contains(index)) GUI.backgroundColor = Color.red;
+                else GUI.backgroundColor = Color.white;
+            };
         }
-        list.drawElementBackgroundCallback = (rect, index, isActive, isFocused) =>
-        {
-            if (repeatList.Contains(index)) GUI.backgroundColor = Color.red;
-            else GUI.backgroundColor = Color.white;
-        };
-    
         list.DoLayoutList();
         serializedObject.ApplyModifiedProperties();
     }
