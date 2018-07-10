@@ -278,7 +278,7 @@ function BaseView:ShowIndex(index)
 	end
 
 	if nil == index then
-		print("BaseView:ShowIndex index == nil")
+		print_error("BaseView:ShowIndex index == nil")
 		return
 	end
 

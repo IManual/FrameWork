@@ -66,12 +66,12 @@ end
 function KnapsackCell:OnFlush()
 	self.index = self:GetIndex()
 	for i = 1, 5 do
-		self.item_cell_list[i]:SetNum(5 * i - 4)
+		self.item_cell_list[i]:SetNum(i * 5 - 5 + self.index)
 	end
 end
 
 function KnapsackCell:Click()
-	print("Item_cell"..self.index)
+	print_error("Item_cell"..self.index)
 end
 
 function KnapsackCell:SetChildrenToggeleGroup(group)

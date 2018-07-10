@@ -16,10 +16,8 @@ end
 function BaseRender:SetInstance(instance)
 	-- UI根节点，支持instance是GameObject或者U3DObject
 	if type(instance) == "userdata" then
-		print(type(instance))
 		self.root_node = U3DObject(instance)
 	else
-		print(type(instance))
 		self.root_node = instance
 	end
 
