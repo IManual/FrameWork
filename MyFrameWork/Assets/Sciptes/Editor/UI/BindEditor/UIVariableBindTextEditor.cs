@@ -16,12 +16,16 @@ class UIVariableBindTextEditor : Editor
     int[] intList = new int[10];
     List<String> paramList = new List<string>();
 
-    private void OnEnable()
+    private void Awake()
     {
         for (int i = 0; i < intList.Length; i++)
         {
             intList[i] = 0;
         }
+    }
+
+    private void OnEnable()
+    {
         self = (UIVariableBindText)target;
         paramProperty = serializedObject.FindProperty("paramBinds");
         list = new ReorderableList(serializedObject, paramProperty, true, true, true, true);
@@ -39,17 +43,17 @@ class UIVariableBindTextEditor : Editor
 
         if (self.variableTable != null)
         {
-            for (int i = 0; i < self.variableTable.variables.Length; i++)
+            for (int i = 0; i < self.variableTable.Variables.Length; i++)
             {
-                if (!string.IsNullOrEmpty(self.variableTable.variables[i].Name))
+                if (!string.IsNullOrEmpty(self.variableTable.Variables[i].Name))
                 {
-                    if (self.variableTable.variables[i].Type == UIVariableType.String
-                        || self.variableTable.variables[i].Type == UIVariableType.Boolean
-                        || self.variableTable.variables[i].Type == UIVariableType.Interger
-                        || self.variableTable.variables[i].Type == UIVariableType.Float
+                    if (self.variableTable.Variables[i].Type == UIVariableType.String
+                        || self.variableTable.Variables[i].Type == UIVariableType.Boolean
+                        || self.variableTable.Variables[i].Type == UIVariableType.Interger
+                        || self.variableTable.Variables[i].Type == UIVariableType.Float
                         )
                     {
-                        paramList.Add(self.variableTable.variables[i].Name);
+                        paramList.Add(self.variableTable.Variables[i].Name);
                     }
                 }
             }
@@ -59,6 +63,16 @@ class UIVariableBindTextEditor : Editor
 
         list.drawElementCallback = (rect, index, isActive, isFocused) =>
         {
+            if (!string.IsNullOrEmpty(self.ParamBinds[index]))
+            {
+                for (int i = 0; i < names.Length; i++)
+                {
+                    if (names[i] == self.ParamBinds[index])
+                    {
+                        intList[index] = i;
+                    }
+                }
+            }
             intList[index] = EditorGUI.Popup(rect, "Element " + index, intList[index], names);
             try
             {
@@ -74,6 +88,8 @@ class UIVariableBindTextEditor : Editor
         //刷新
         serializedObject.Update();
         list.DoLayoutList();
+        self.BindVariables();
+        self.SetFormat();
         serializedObject.ApplyModifiedProperties();
     }
 }

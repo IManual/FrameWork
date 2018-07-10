@@ -283,6 +283,8 @@ public class UIVariable
     {
         if (this.booleanValue != value)
         {
+            Debug.Log(name);
+            Debug.Log(value);
             this.booleanValue = value;
             this.ValueChange();
         }
@@ -407,7 +409,7 @@ public class UIVariable
 
     #endregion
 
-    internal void ValueChange()
+    public void ValueChange()
     {
         if (this.onValueChange != null)
         {
@@ -415,7 +417,7 @@ public class UIVariable
         }
     }
 
-    internal void ValueInitialized()
+    public void ValueInitialized()
     {
         if (this.onValueInitialized != null)
         {

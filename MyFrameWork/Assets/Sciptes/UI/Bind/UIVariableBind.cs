@@ -35,7 +35,7 @@ public abstract class UIVariableBind : BaseBehaviour {
     /// <summary>
     /// 游戏启动时 table进行一次调用 当前脚本挂载时也调用一次
     /// </summary>
-    internal void Init()
+    public void Init()
     {
         if (!start)
         {

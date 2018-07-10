@@ -8,11 +8,12 @@ using UnityEngine;
 public class UIVariableTableEditor : Editor
 {
     ReorderableList list;
+    UIVariableTable table;
 
     private void OnEnable()
     {
         //当前table对象
-        var table = (UIVariableTable)target;
+        table = (UIVariableTable)target;
 
         var prop = serializedObject.FindProperty("variables");
 
@@ -32,9 +33,25 @@ public class UIVariableTableEditor : Editor
         };
     }
 
+    List<int> repeatList = new List<int>();
     public override void OnInspectorGUI()
     {
         serializedObject.Update();      //更新对象最新数据
+        table.FlushVariableDic();
+        repeatList.Clear();
+        for (int i = 0; i < table.Variables.Length; i++)
+        {
+            if (table.GetRepeatVariable().Contains(table.Variables[i].Name))
+            {
+                repeatList.Add(i);
+            }
+        }
+        list.drawElementBackgroundCallback = (rect, index, isActive, isFocused) =>
+        {
+            if (repeatList.Contains(index)) GUI.backgroundColor = Color.red;
+            else GUI.backgroundColor = Color.white;
+        };
+    
         list.DoLayoutList();
         serializedObject.ApplyModifiedProperties();
     }

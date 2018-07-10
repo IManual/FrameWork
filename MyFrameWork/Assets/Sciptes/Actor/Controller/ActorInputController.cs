@@ -7,21 +7,12 @@ public class ActorInputController : BaseBehaviour
 
     private Animator anim;
 
-    private ActorStatus actorStatus;
-
-    private ActorSkillManager skillManager;
-
-    private ActorSkillSystem skillSystem;
-
     /// <summary>
     /// 初始化所有组件
     /// </summary>
     private void Init()
     {
         anim = GetComponentInChildren<Animator>();
-        actorStatus = GetComponent<ActorStatus>();
-        skillManager = GetComponent<ActorSkillManager>();
-        skillSystem = GetComponent<ActorSkillSystem>();
     }
 
     protected override void Awake()
@@ -40,7 +31,7 @@ public class ActorInputController : BaseBehaviour
 
         if (Input.GetKeyDown(KeyCode.J))
         {
-            OnSkillBtnPressed();
+            OnSkillDown(1000);
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
@@ -57,26 +48,12 @@ public class ActorInputController : BaseBehaviour
     /// </summary>
     private void OnSkillDown(int skillId)
     {
-        if (actorStatus.IsAttacking()) return;
-        skillSystem.AttackUseSkill(skillId, false);
+        anim.Play("swordStrike1");
     }
 
     public float maxBatterTime = 3;
     public float minAttackTime = 1;
     float lastClickTime;
-
-    /// <summary>
-    /// 单体技能(有连招)
-    /// </summary>
-    private void OnSkillBtnPressed()
-    {
-        if (actorStatus.IsAttacking()) return;
-        float interval = Time.unscaledTime - lastClickTime;
-        if (interval < minAttackTime) return;
-        bool isBatter = interval <= maxBatterTime;
-        skillSystem.AttackUseSkill(1, isBatter);
-        lastClickTime = Time.unscaledTime;
-    }
 
     private void MoveControlByTranslateGetAxis()
     {

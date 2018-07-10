@@ -49,7 +49,7 @@ public class AtlasPacker : EditorWindow
             }
 
             checkDirs[0] = AssetDatabase.GetAssetPath(targetFile);
-            if (Directory.Exists(checkDirs[0]))
+            if (!Directory.Exists(checkDirs[0]))
             {
                 this.ShowNotification(new GUIContent("请选择正确的文件夹!"));
             }

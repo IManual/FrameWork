@@ -233,6 +233,7 @@ GameObject:
   - component: {fileID: 298228742}
   - component: {fileID: 298228745}
   - component: {fileID: 298228744}
+  - component: {fileID: 298228746}
   - component: {fileID: 298228743}
   m_Layer: 5
   m_Name: Image
@@ -256,8 +257,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -1.72, y: 34.21}
+  m_SizeDelta: {x: 96.57, y: 31.58}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &298228743
 MonoBehaviour:
@@ -267,30 +268,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 298228741}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2144a5a61e8e4e34eac2f1c83c170c3d, type: 3}
+  m_Script: {fileID: 11500000, guid: 03c95e9790bc718468d1defa514da882, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  variables:
-  - name: 
-    type: 0
-    booleanValue: 0
-    intergerValue: 0
-    floatValue: 0
-    stringValue: 
-    assetValue:
-      bundleName: 
-      assetName: 
-      assetGUID: 
-  - name: 
-    type: 0
-    booleanValue: 0
-    intergerValue: 0
-    floatValue: 0
-    stringValue: 
-    assetValue:
-      bundleName: 
-      assetName: 
-      assetGUID: 
+  variableTable: {fileID: 298228746}
+  format: 
+  paramBinds:
+  - adc
+  - 123
 --- !u!114 &298228744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,13 +308,65 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: dasda
 --- !u!222 &298228745
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 298228741}
+--- !u!114 &298228746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 298228741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2144a5a61e8e4e34eac2f1c83c170c3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  variables:
+  - name: adc
+    type: 3
+    booleanValue: 0
+    intergerValue: 0
+    floatValue: 0
+    stringValue: dasda
+    assetValue:
+      bundleName: 
+      assetName: 
+      assetGUID: 
+  - name: 123
+    type: 1
+    booleanValue: 0
+    intergerValue: 123
+    floatValue: 0
+    stringValue: dasda
+    assetValue:
+      bundleName: 
+      assetName: 
+      assetGUID: 
+  - name: 123
+    type: 1
+    booleanValue: 0
+    intergerValue: 345
+    floatValue: 0
+    stringValue: dasda
+    assetValue:
+      bundleName: 
+      assetName: 
+      assetGUID: 
+  - name: 123
+    type: 1
+    booleanValue: 0
+    intergerValue: 345
+    floatValue: 0
+    stringValue: dasda
+    assetValue:
+      bundleName: 
+      assetName: 
+      assetGUID: 
 --- !u!1 &910025003
 GameObject:
   m_ObjectHideFlags: 0

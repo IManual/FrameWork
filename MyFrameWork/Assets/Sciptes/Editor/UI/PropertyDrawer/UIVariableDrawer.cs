@@ -10,6 +10,7 @@ using UnityEditor;
 [CustomPropertyDrawer(typeof(UIVariable))]
 public class UIVariableDrawer : PropertyDrawer
 {
+    UIVariable variable;
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         EditorGUI.BeginProperty(position, label, property);
@@ -33,6 +34,7 @@ public class UIVariableDrawer : PropertyDrawer
         };
         //绘制上一行
         nameProperty.stringValue = EditorGUI.TextField(nameRect, nameProperty.stringValue);
+
         gameProperty.intValue = (int)(UIVariableType)EditorGUI.EnumPopup(gameRect, (UIVariableType)gameProperty.enumValueIndex);
         rectLine.y += EditorGUIUtility.singleLineHeight;
         //绘制下一行
@@ -56,6 +58,7 @@ public class UIVariableDrawer : PropertyDrawer
         {
             DrawAsset(rectLine, property, label);
         }
+        EditorGUI.EndProperty();
     }
 
     /// <summary>
@@ -70,28 +73,24 @@ public class UIVariableDrawer : PropertyDrawer
     {
         var booleanProperty = property.FindPropertyRelative("booleanValue");
         booleanProperty.boolValue = EditorGUI.Toggle(rectLine, booleanProperty.boolValue);
-        EditorGUI.EndProperty();
     }
 
     public void DrawFloat(Rect rectLine, SerializedProperty property, GUIContent label)
     {
         var floatProperty = property.FindPropertyRelative("floatValue");
         floatProperty.floatValue = EditorGUI.FloatField(rectLine, floatProperty.floatValue);
-        EditorGUI.EndProperty();
     }
 
     public void DrawString(Rect rectLine, SerializedProperty property, GUIContent label)
     {
         var stringProperty = property.FindPropertyRelative("stringValue");
         stringProperty.stringValue = EditorGUI.TextField(rectLine, stringProperty.stringValue);
-        EditorGUI.EndProperty();
     }
 
     public void DrawInterge(Rect rectLine, SerializedProperty property, GUIContent label)
     {
         var intergerProperty = property.FindPropertyRelative("intergerValue");
         intergerProperty.longValue = EditorGUI.LongField(rectLine, intergerProperty.longValue);
-        EditorGUI.EndProperty();
     }
 
     string bundleName = "";
@@ -114,6 +113,5 @@ public class UIVariableDrawer : PropertyDrawer
         bundleName = EditorGUI.TextField(new Rect(rectLine) { width = rectLine.width * 0.5f, }, bundleName);
         assetName = EditorGUI.TextField(new Rect(rectLine) { width = rectLine.width * 0.5f, x = rectLine.width * 0.5f + 35f, }, assetName);
         assetID = new AssetID(bundleName, assetName);     
-        EditorGUI.EndProperty();
     }
 }

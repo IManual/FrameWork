@@ -4,9 +4,13 @@ using UnityEngine;
 using ExitGames.Client.Photon;
 using System;
 using UnityEngine.Events;
+using System.Net.Sockets;
+using System.Net;
 
-public class GameNet : IPhotonPeerListener
+public class GameNet
 {
+    public Socket m_socket;
+
     public UnityAction OnDisconnect;
 
     public UnityAction OnSendError;
@@ -29,22 +33,32 @@ public class GameNet : IPhotonPeerListener
 
     public GameNet()
     {
-        InitPeer();
+        IPAddress ipAddress = IPAddress.Parse("192.168.95.143");
+        int port = 5050;
+        Connect(ipAddress, port);
         if (instance == null) instance = this;
         else Debug.LogError("Try To Instance [GameNet] Twice!");
     }
 
-    private static PhotonPeer peer;
-
-    public static PhotonPeer Peer
+    private void ConnectCallback(IAsyncResult ar)
     {
-        get { return peer; }
+
     }
 
-    private void InitPeer()
-    {
-        peer = new PhotonPeer(this, ConnectionProtocol.Udp);
-        peer.Connect("127.0.0.1:5055", "MyGame1");
+    /// <summary>
+    /// 连接服务器主机
+    /// </summary>
+    /// <param name="ipAddress">IP地址</param>
+    /// <param name="port">端口号</param>
+    private void Connect(IPAddress ipAddress, int port)
+    {  
+        //创建socket对象
+        m_socket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+        m_socket.BeginConnect(ipAddress, port, ConnectCallback, null);
+        if (m_socket == null)
+        {
+            Debug.LogError("进行网络连接时创建Socket对象失败");
+        }
     }
 
     //协议池
@@ -80,11 +94,11 @@ public class GameNet : IPhotonPeerListener
     /// </summary>
     public void Update()
     {
-        //连接服务器时要一直调用service方法
-        if(peer!= null)
-        {
-            peer.Service();
-        }
+        ////连接服务器时要一直调用service方法
+        //if(peer!= null)
+        //{
+        //    peer.Service();
+        //}
     }
 
     public void OnStatusChanged(StatusCode statusCode)
@@ -152,11 +166,12 @@ public class GameNet : IPhotonPeerListener
     }
 
     public void DisConnected()
-    { //游戏关闭时断开连接
-        if (peer != null && peer.PeerState == PeerStateValue.Connected)
-        {
-            peer.Disconnect();
-        }
+    { 
+        //游戏关闭时断开连接
+        //if (peer != null && peer.PeerState == PeerStateValue.Connected)
+        //{
+        //    peer.Disconnect();
+        //}
     }
 
     /// <summary>

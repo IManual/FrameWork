@@ -12,7 +12,7 @@ public class UIVariableTable : BaseBehaviour {
 
     // 变量参数数组           通过editor在编辑器下赋值
     [SerializeField]
-    public UIVariable[] variables;
+    private UIVariable[] variables;
 
     //变量名字与变量的字典
     public Dictionary<string, UIVariable> variableDic;
@@ -43,6 +43,45 @@ public class UIVariableTable : BaseBehaviour {
             }
         }
         return this.variableDic;
+    }
+
+    UIVariable[] tempList;
+    UIVariable tmp;
+    /// <summary>
+    /// 编辑器状态下刷新变量字典
+    /// </summary>
+    public void FlushVariableDic()
+    {
+        //字典根据键进行排序
+        if (this.variables != null)
+        {
+            if (variableDic == null)
+            {
+                this.variableDic = new Dictionary<string, UIVariable>(StringComparer.Ordinal);
+            }
+            variableDic.Clear();
+            repeatVar.Clear();
+            tempList = this.variables;
+            for (int i = 0; i < tempList.Length; i++)
+            {
+                tmp = tempList[i];
+                if (variableDic.ContainsKey(tmp.Name))
+                {
+                    repeatVar.Add(tmp.Name);
+                }
+                else
+                    this.variableDic.Add(tmp.Name, tmp);
+            }
+        }
+    }
+
+    List<string> repeatVar = new List<string>(5);
+    /// <summary>
+    /// Editor脚本绘制时获取重复变量
+    /// </summary>
+    public List<string> GetRepeatVariable()
+    {
+        return repeatVar;
     }
 
     /// <summary>

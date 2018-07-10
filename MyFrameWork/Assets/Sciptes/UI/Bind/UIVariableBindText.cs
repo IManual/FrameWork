@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
@@ -75,7 +76,7 @@ public class UIVariableBindText : UIVariableBind
         {
             this.UIText = base.GetComponent<Text>();
         }
-        if (this.UIText || this.paramBinds == null || this.variableList == null)
+        if (UIText == null || paramBinds == null || variableList == null)
         {
             return;
         }
@@ -93,6 +94,10 @@ public class UIVariableBindText : UIVariableBind
                         this.UIText.text = valueObject.ToString();
                     }
                 }
+                else
+                {
+                    this.UIText.text = "";
+                }
             }
         }
         else
@@ -108,7 +113,12 @@ public class UIVariableBindText : UIVariableBind
             }
             try
             {//尝试按照format格式进行组合
-                this.UIText.text = string.Format(this.format, array);
+                tmp = this.format;
+                if (Regex.Matches(tmp, "{").Count % 2 == 1 && Regex.Matches(tmp, "{").Count != Regex.Matches(tmp, "}").Count)
+                {
+                    tmp = tmp.Replace("{", "{{");                 
+                }
+                this.UIText.text = string.Format(tmp, array);
             }
             catch (FormatException ex)
             {//如果失败 抛出异常
@@ -119,7 +129,7 @@ public class UIVariableBindText : UIVariableBind
             }
         }
     }
-
+    string tmp = "";
     /// <summary>
     /// 当前脚本挂载时调用一次  父类Init方法可调用当前方法
     /// </summary>
@@ -138,7 +148,7 @@ public class UIVariableBindText : UIVariableBind
                     UIVariable uIVariable = base.FindVariable(text); 
                     if (uIVariable == null)
                     {
-                        Debug.Log(name + "can not find a variable " + text);
+                        //Debug.Log(name + "can not find a variable " + text);
                     }
                     else
                     {
@@ -151,6 +161,10 @@ public class UIVariableBindText : UIVariableBind
                         this.variableList[i] = uIVariable;
                     }
                 }
+                else
+                {
+                    
+                }
             }
             //刷新一次text
             this.SetFormat();
@@ -162,6 +176,7 @@ public class UIVariableBindText : UIVariableBind
     /// </summary>
     public override void UnbindVariables()
     {
+        Debug.Log("UnbindVariables");
         if (this.variableList != null)
         {
             UIVariable[] array = this.variableList;
