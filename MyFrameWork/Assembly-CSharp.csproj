@@ -141,8 +141,8 @@
     <Compile Include="Assets\Sciptes\UI\Bind\UIEventBindClick.cs" />
     <Compile Include="Assets\Sciptes\UI\Bind\UIVariableBind.cs" />
     <Compile Include="Assets\Sciptes\UI\Bind\UIVariableBindActive.cs" />
+    <Compile Include="Assets\Sciptes\UI\Bind\UIVariableBindBool.cs" />
     <Compile Include="Assets\Sciptes\UI\Bind\UIVariableBindText.cs" />
-    <Compile Include="Assets\Sciptes\UI\Bind\VariableNameAttribute.cs" />
     <Compile Include="Assets\Sciptes\UI\Other\CircleImage.cs" />
     <Compile Include="Assets\Sciptes\UI\Other\CompilerGeneratedAttribute.cs" />
     <Compile Include="Assets\Sciptes\UI\Other\RadialLayoutGroup.cs" />

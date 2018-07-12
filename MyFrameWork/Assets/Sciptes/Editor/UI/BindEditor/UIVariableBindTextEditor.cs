@@ -33,27 +33,32 @@ class UIVariableBindTextEditor : Editor
         {
             EditorGUI.LabelField(rect, "ParamsList:");
         };
+        if (self.variableTable == null) self.GetTable();
     }
 
     public override void OnInspectorGUI()
     {
+        serializedObject.Update();
         paramList.Clear();
-        EditorGUILayout.ObjectField("Variable Table", self.VariableTable, typeof(UIVariableTable), true);
+        self.variableTable = EditorGUILayout.ObjectField("Variable Table", self.variableTable, typeof(UIVariableTable), true) as UIVariableTable;
         self.Format = EditorGUILayout.TextField("Format", self.Format);
 
         if (self.variableTable != null)
         {
             for (int i = 0; i < self.variableTable.Variables.Length; i++)
             {
-                if (!string.IsNullOrEmpty(self.variableTable.Variables[i].Name))
+                if (self.variableTable.Variables != null)
                 {
-                    if (self.variableTable.Variables[i].Type == UIVariableType.String
-                        || self.variableTable.Variables[i].Type == UIVariableType.Boolean
-                        || self.variableTable.Variables[i].Type == UIVariableType.Interger
-                        || self.variableTable.Variables[i].Type == UIVariableType.Float
-                        )
+                    if (!string.IsNullOrEmpty(self.variableTable.Variables[i].Name))
                     {
-                        paramList.Add(self.variableTable.Variables[i].Name);
+                        if (self.variableTable.Variables[i].Type == UIVariableType.String
+                            || self.variableTable.Variables[i].Type == UIVariableType.Boolean
+                            || self.variableTable.Variables[i].Type == UIVariableType.Interger
+                            || self.variableTable.Variables[i].Type == UIVariableType.Float
+                            )
+                        {
+                            paramList.Add(self.variableTable.Variables[i].Name);
+                        }
                     }
                 }
             }
@@ -86,10 +91,8 @@ class UIVariableBindTextEditor : Editor
         }; 
 
         //刷新
-        serializedObject.Update();
         list.DoLayoutList();
         self.BindVariables();
-        self.SetFormat();
         serializedObject.ApplyModifiedProperties();
     }
 }

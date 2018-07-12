@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 
 /// <summary>
@@ -10,55 +11,118 @@ using UnityEngine;
 [CustomEditor(typeof(UIVariableBindActive))]
 public class UIVariableBindActiveEditor : Editor {
 
-    UIVariableBindActive bind;
+    UIVariableBindActive self;
+    ReorderableList list;
+    SerializedProperty variables;
+    SerializedProperty booleanLogic;
+    SerializedProperty transitionMode;
+    SerializedProperty transitionTime;
+    int[] intList = new int[10];
 
-    private void OnEnable()
-    {//targer为自身引用
-        bind = (UIVariableBindActive)target;
-        //查找当前引用的VariableTable
-        if (bind.variableTable == null)
+    Rect line_first;
+    Rect line_sercond;
+    SerializedProperty currrent;
+    SerializedProperty variableName;
+    SerializedProperty reverse;
+
+    private void Awake()
+    {
+        for (int i = 0; i < intList.Length; i++)
         {
-            bind.variableTable = Tool.FindFather(bind.transform, a =>
-            {
-                return a.GetComponent<UIVariableTable>() != null;
-            }).GetComponent<UIVariableTable>();
+            intList[i] = 0;
         }
     }
 
+    private void OnEnable()
+    {//targer为自身引用
+        self = (UIVariableBindActive)target;
+        variables = serializedObject.FindProperty("variables");
+        booleanLogic = serializedObject.FindProperty("booleanLogic");
+        transitionMode = serializedObject.FindProperty("transitionMode");
+        transitionTime = serializedObject.FindProperty("transitionTime");
+
+        list = new ReorderableList(serializedObject, variables, true, true, true, true);
+        list.drawHeaderCallback = (rect) =>
+        {
+            EditorGUI.LabelField(rect, "Variables:");
+        };
+
+        list.elementHeight = EditorGUIUtility.singleLineHeight * 2;
+        list.drawElementCallback = (rect, index, isActive, isFocused) =>
+        {
+            currrent = variables.GetArrayElementAtIndex(index);
+            variableName = currrent.FindPropertyRelative("variableName");
+            reverse = currrent.FindPropertyRelative("reverse");
+
+            if (!string.IsNullOrEmpty(variableName.stringValue))
+            {
+                for (int i = 0; i < names.Length; i++)
+                {
+                    if (names[i] == variableName.stringValue)
+                    {
+                        intList[index] = i;
+                    }
+                }
+            }
+            line_first = new Rect(
+                rect.x,
+                rect.y,
+                rect.width,
+                EditorGUIUtility.singleLineHeight);
+            line_sercond = new Rect(
+                rect.x,
+                rect.y + EditorGUIUtility.singleLineHeight,
+                rect.width,
+                EditorGUIUtility.singleLineHeight);
+
+            intList[index] = EditorGUI.Popup(line_first, "Variable Name ", intList[index], names);
+            reverse.boolValue = EditorGUI.Toggle(line_sercond, "Reverse", reverse.boolValue);
+            try
+            {
+                variableName.stringValue = names[intList[index]];
+            }
+            catch (Exception) { }
+        };
+    }
+
+    List<String> paramList = new List<string>();
+    string[] names = new string[] { };
     public override void OnInspectorGUI()
     {
-        //UIVariableTable variableTable = bind.variableTable;
-        ////更新数据
-        //if (variableTable != null)
-        //{ 
-        //    List<String> nameByType = new List<String>();
-        //    //拿到所有bool类型
-        //    for (int i = 0; i < variableTable.variables.Length; i++)
-        //    {
-        //        if(variableTable.variables[i].type == UIVariableType.Bollean)
-        //        {
-        //            nameByType.Add(variableTable.variables[i].name);
-        //        }
-        //    }
-        //    string[] names = new string[nameByType.Count];
-        //    names = nameByType.ToArray();
-        //    //将所有bool类型变量填充到界面 index（当前选择的变量索引)
-        //    bind.index = EditorGUILayout.Popup("Boolean logic:", bind.index, names);
-        //    //查找绑定的变量对应在VariableTable上的值
-        //    if (name.Length > 0)
-        //    {
-        //        foreach (var item in variableTable.variables)
-        //        {
-        //            Debug.Log(item.name);
-        //            Debug.Log(names[bind.index]);
-        //            if (item.name == names[bind.index])
-        //            {//实际绑定
-        //                bind.variable = item;
-        //            }
-        //        }
-        //    }          
-        // }
-        //刷新
-        base.OnInspectorGUI();
+        serializedObject.Update();      //刷新最新的数据
+        self.variableTable = EditorGUILayout.ObjectField("Variable Table", self.variableTable, typeof(UIVariableTable), true) as UIVariableTable;
+        booleanLogic.enumValueIndex = 
+            (int)(UIVariableBindBool.BooleanLogic)EditorGUILayout.EnumPopup("Boolean logic", (UIVariableBindBool.BooleanLogic)booleanLogic.enumValueIndex);
+
+        //绘制列表
+        paramList.Clear();
+        if (self.variableTable != null)
+        {
+            for (int i = 0; i < self.variableTable.Variables.Length; i++)
+            {
+                if (self.variableTable.Variables != null)
+                {
+                    if (!string.IsNullOrEmpty(self.variableTable.Variables[i].Name))
+                    {
+                        if (self.variableTable.Variables[i].Type == UIVariableType.String
+                            || self.variableTable.Variables[i].Type == UIVariableType.Boolean
+                            || self.variableTable.Variables[i].Type == UIVariableType.Interger
+                            || self.variableTable.Variables[i].Type == UIVariableType.Float
+                            )
+                        {
+                            paramList.Add(self.variableTable.Variables[i].Name);
+                        }
+                    }
+                }
+            }
+            names = paramList.ToArray();
+        }
+
+        list.DoLayoutList();
+        transitionTime.floatValue = EditorGUILayout.FloatField("Transition Time", transitionTime.floatValue);
+        transitionMode.enumValueIndex = 
+            (int)(UIVariableBindActive.TransitionModeEnum)EditorGUILayout.EnumPopup("Transition Mode", (UIVariableBindActive.TransitionModeEnum)transitionMode.enumValueIndex);
+        serializedObject.ApplyModifiedProperties(); //应用修改的数据
+        self.BindVariables();
     }
 }

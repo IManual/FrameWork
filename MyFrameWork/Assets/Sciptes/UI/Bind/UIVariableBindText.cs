@@ -156,7 +156,7 @@ public class UIVariableBindText : UIVariableBind
                         uIVariable.OnValueInitialized += new Action(this.SetFormat);
                         //将刷新text的方法 挂载到 变量改变的回调上
                         uIVariable.OnValueChanged += new Action(this.SetFormat);
-                        //uIVariable.AddBind(this);
+                        uIVariable.AddBind(this);
                         //给当前的variableList变量列表赋值
                         this.variableList[i] = uIVariable;
                     }
@@ -182,7 +182,7 @@ public class UIVariableBindText : UIVariableBind
                 {
                     uIVariable.OnValueChanged -= new Action(this.SetFormat);
                     uIVariable.OnValueInitialized -= new Action(this.SetFormat);
-                    //uIVariable.RemoveBind(this);
+                    uIVariable.RemoveBind(this);
                 }
             }
             this.variableList = null;

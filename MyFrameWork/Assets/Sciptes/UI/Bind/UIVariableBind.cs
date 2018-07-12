@@ -28,8 +28,8 @@ public abstract class UIVariableBind : BaseBehaviour {
     /// </summary>
     public UIVariableTable VariableTable
     {
-        get;
-        private set;
+        get { return variableTable; }
+        set { variableTable = value; }
     }
 
     /// <summary>
@@ -90,7 +90,7 @@ public abstract class UIVariableBind : BaseBehaviour {
     /// <summary>
     /// 从自身开始向上查找table
     /// </summary>
-    private void GetTable()
+    public void GetTable()
     {
         if (this.variableTable == null)
         {

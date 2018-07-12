@@ -41,7 +41,7 @@ public class UIVariable
     /// <summary>
     /// 当前变量所绑定的bind脚本列表
     /// </summary>
-    //private List<UIVariableBind> variableBindList = new List<UIVariableBind>();
+    public List<UIVariableBind> variableBindList = new List<UIVariableBind>();
 
     //值改变回调
     private Action onValueChange;
@@ -49,8 +49,8 @@ public class UIVariable
     //值初始化回调
     private Action onValueInitialized;
 
-    //[CompilerGenerated]
-    //private static Predicate<UIVariableBind> bindList;
+    [CompilerGenerated]
+    private static Predicate<UIVariableBind> bindList;
 
     /// <summary>
     /// 变量改变
@@ -139,7 +139,7 @@ public class UIVariable
         return this.booleanValue;
     }
 
-    public int GeyInteger()
+    public int GetInteger()
     {
         return (int)this.intergerValue;
     }
@@ -433,30 +433,37 @@ public class UIVariable
         this.SetAsset(AssetID.Empty);
     }
 
+    //添加绑定
+    public void AddBind(UIVariableBind bind)
+    {
+        if (this.variableBindList.IndexOf(bind) == -1)
+        {
+            this.variableBindList.Add(bind);
+        }
+    }
+
+    internal void Fun0()
+    {
+        List<UIVariableBind> arg_23_0 = this.variableBindList;
+        if (UIVariable.bindList == null)
+        {
+            UIVariable.bindList = new Predicate<UIVariableBind>(UIVariable.IsNull);
+        }
+        arg_23_0.RemoveAll(UIVariable.bindList);
+    }
+
+    [CompilerGenerated]
+    private static bool IsNull(UIVariableBind uIVariableBind)
+    {
+        return uIVariableBind == null;
+    }
+
+    public void RemoveBind(UIVariableBind bind)
+    {
+        this.variableBindList.Remove(bind);
+    }
+
     #region 多余代码
-    //public void AddBind(UIVariableBind bind)
-    //{
-    //    if (this.variableBindList.IndexOf(bind) == -1)
-    //    {
-    //        this.variableBindList.Add(bind);
-    //    }
-    //}
-
-    //public void RemoveBind(UIVariableBind bind)
-    //{
-    //    this.variableBindList.Remove(bind);
-    //}
-
-    //internal void Fun0()
-    //{
-    //    List<UIVariableBind> arg_23_0 = this.variableBindList;
-    //    if (UIVariable.bindList == null)
-    //    {
-    //        UIVariable.bindList = new Predicate<UIVariableBind>(UIVariable.IsNull);
-    //    }
-    //    arg_23_0.RemoveAll(UIVariable.bindList);
-    //}
-
     //internal void Fun()
     //{
     //    switch (this.type)
@@ -493,12 +500,6 @@ public class UIVariable
     //    }
     //}
 
-
-    //[CompilerGenerated]
-    //private static bool IsNull(UIVariableBind uIVariableBind)
-    //{
-    //    return uIVariableBind == null;
-    //}
     #endregion
 }
 

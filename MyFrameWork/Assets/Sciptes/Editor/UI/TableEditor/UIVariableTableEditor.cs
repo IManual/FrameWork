@@ -52,7 +52,23 @@ public class UIVariableTableEditor : Editor
             list.drawElementBackgroundCallback = (rect, index, isActive, isFocused) =>
             {
                 if (repeatList.Contains(index)) GUI.backgroundColor = Color.red;
-                else GUI.backgroundColor = Color.white;
+                else
+                {
+                    if (isFocused)
+                    {
+                        GUI.backgroundColor = Color.gray;
+                    }
+                    else
+                    {
+                        GUI.backgroundColor = Color.white;
+                        //修改table时同步触发各个Variable绑定的物体的刷新
+                        foreach (var item in table.Variables[index].variableBindList)
+                        {
+                            item.BindVariables();
+                            EditorUtility.SetDirty(item);
+                        }
+                    }
+                }
             };
         }
         list.DoLayoutList();
