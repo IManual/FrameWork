@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditorInternal;
@@ -27,10 +28,6 @@ public class UIVariableTableEditor : Editor
             EditorGUI.PropertyField(rect, element);//绘制一个variable 输入的值传递给variable
         };
 
-        list.drawHeaderCallback = (rect) =>
-        {
-            EditorGUI.LabelField(rect, "Variables:");
-        };
     }
 
     List<int> repeatList = new List<int>();
@@ -62,13 +59,20 @@ public class UIVariableTableEditor : Editor
                     {
                         GUI.backgroundColor = Color.white;
                         //修改table时同步触发各个Variable绑定的物体的刷新
-                        foreach (var item in table.Variables[index].variableBindList)
-                        {
-                            item.BindVariables();
-                            EditorUtility.SetDirty(item);
-                        }
+                        try { 
+                            foreach (var item in table.Variables[index].variableBindList)
+                            {
+                                item.BindVariables();
+                                EditorUtility.SetDirty(item);
+                            }
+                        }catch (Exception e) {};
                     }
                 }
+            };
+
+            list.drawHeaderCallback = (rect) =>
+            {
+                EditorGUI.LabelField(rect, "Variables:");
             };
         }
         list.DoLayoutList();
