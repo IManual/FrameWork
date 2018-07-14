@@ -29,7 +29,6 @@ end
 function ItemCell:ListenClick(handler)
 	self:ClearEvent("Click")
 	self.handler = handler
-	print(handler)
 	self:ListenEvent("Click", handler or BindTool.Bind(self.OnClickItemCell, self))
 end
 

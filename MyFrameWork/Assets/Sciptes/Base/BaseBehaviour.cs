@@ -4,6 +4,14 @@ using UnityEngine;
 
 public abstract class BaseBehaviour : MonoBehaviour
 {
+    /// <summary>
+    /// 当该脚本被加载活检视面板的值被修改时调用此函数(仅在编辑器中调用)
+    /// </summary>
+    protected virtual void OnValidate()
+    {
+        
+    }
+
     protected virtual void Awake()
     {
 

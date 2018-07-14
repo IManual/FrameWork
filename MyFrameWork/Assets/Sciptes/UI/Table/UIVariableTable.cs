@@ -45,45 +45,6 @@ public class UIVariableTable : BaseBehaviour {
         return this.variableDic;
     }
 
-    UIVariable[] tempList;
-    UIVariable tmp;
-    /// <summary>
-    /// 编辑器状态下刷新变量字典
-    /// </summary>
-    public void FlushVariableDic()
-    {
-        //字典根据键进行排序
-        if (this.variables != null)
-        {
-            if (variableDic == null)
-            {
-                this.variableDic = new Dictionary<string, UIVariable>(StringComparer.Ordinal);
-            }
-            variableDic.Clear();
-            repeatVar.Clear();
-            tempList = this.variables;
-            for (int i = 0; i < tempList.Length; i++)
-            {
-                tmp = tempList[i];
-                if (variableDic.ContainsKey(tmp.Name))
-                {
-                    repeatVar.Add(tmp.Name);
-                }
-                else
-                    this.variableDic.Add(tmp.Name, tmp);
-            }
-        }
-    }
-
-    List<string> repeatVar = new List<string>(5);
-    /// <summary>
-    /// Editor脚本绘制时获取重复变量
-    /// </summary>
-    public List<string> GetRepeatVariable()
-    {
-        return repeatVar;
-    }
-
     /// <summary>
     /// 根据变量名字找到对应变量
     /// </summary>
@@ -147,7 +108,7 @@ public class UIVariableTable : BaseBehaviour {
         //遍历自身变换组件 可以遍历到所有子物体 (不包含孙子物体以及自身)
         foreach (Transform transform2 in transform)
         {
-            UIVariableTable.ActivateChildBind(transform2);
+            ActivateChildBind(transform2);
         }
     }
 
@@ -167,12 +128,46 @@ public class UIVariableTable : BaseBehaviour {
         //遍历自身变换组件 可以遍历到所有子物体 (不包含孙子物体以及自身)
         foreach (Transform transform2 in transform)
         {
-            UIVariableTable.ActivateChildBind(transform2);
+            ActivateChildBind(transform2);
         }
     }
 
     protected override void Awake()
     {
-        UIVariableTable.ActivateSelfBind(transform);
+        ActivateSelfBind(transform);
+    }
+
+    protected override void OnValidate()
+    {
+        variableDic = null;
+        if (variables != null)
+        {
+            UIVariable[] array = this.variables;
+            for (int i = 0; i < array.Length; i++)
+            {            
+                UIVariable uIVariable = array[i];
+                uIVariable.AddDefaultValue();
+                uIVariable.ClearBindList();
+                uIVariable.ValueChange();
+            }        
+        }
+        GetRepeatVariable();
+    }
+
+    public List<string> repeatVar = new List<string>();
+    /// <summary>
+    /// Editor脚本绘制时获取重复变量
+    /// </summary>
+    public List<string> GetRepeatVariable()
+    {
+        repeatVar.Clear();
+        List<string> tmp = new List<string>();
+        UIVariable[] array = this.variables;
+        foreach (var item in array)
+        {
+            if (tmp.Contains(item.Name)) { repeatVar.Add(item.Name); }
+            else { tmp.Add(item.Name); }
+        }
+        return repeatVar;
     }
 }

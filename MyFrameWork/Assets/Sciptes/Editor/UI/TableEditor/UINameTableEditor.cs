@@ -9,16 +9,16 @@ using UnityEngine;
 public class NameTableEditor : Editor {
 
     ReorderableList list;
+    SerializedProperty element;
 
     private void OnEnable()
     {
-        //通过反射找到NameTable 中 component成员
         var prop = serializedObject.FindProperty("component");
         list = new ReorderableList(serializedObject, prop);
         list.drawElementCallback = 
             (rect, index, isActive, isFocused) =>
         {
-            var element = prop.GetArrayElementAtIndex(index);
+            element = prop.GetArrayElementAtIndex(index);
             EditorGUI.PropertyField(rect, element);
         };
         list.drawHeaderCallback = (rect) =>
@@ -29,8 +29,11 @@ public class NameTableEditor : Editor {
 
     public override void OnInspectorGUI()
     {
+        //拉取最新数据
         serializedObject.Update();
+        //绘制list
         list.DoLayoutList();
+        //应用修改
         serializedObject.ApplyModifiedProperties();
     }
 

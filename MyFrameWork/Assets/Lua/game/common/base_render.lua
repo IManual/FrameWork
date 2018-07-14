@@ -97,7 +97,7 @@ function BaseRender:ClearEvent(eventName)
 	if self.event_table == nil then
 		return
 	end
-	--self.event_table:ClearEvent(eventName)
+	self.event_table:ClearEvent(eventName)
 end
 
 -- 监听指定的事件
@@ -107,7 +107,6 @@ function BaseRender:ListenEvent(eventName, listener)
 	if self.event_table == nil then
 		return
 	end
-
 	return self.event_table:ListenEvent(eventName, listener)
 end
 

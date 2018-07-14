@@ -9,8 +9,8 @@ using UnityEngine;
 /// 绘制VariableBindActive脚本
 /// </summary>
 [CustomEditor(typeof(UIVariableBindActive))]
-public class UIVariableBindActiveEditor : Editor {
-
+public class UIVariableBindActiveEditor : Editor
+{
     UIVariableBindActive self;
     ReorderableList list;
     SerializedProperty variables;
@@ -21,9 +21,13 @@ public class UIVariableBindActiveEditor : Editor {
 
     Rect line_first;
     Rect line_sercond;
+
+    SerializedProperty variableTable;
     SerializedProperty currrent;
     SerializedProperty variableName;
     SerializedProperty reverse;
+
+    List<String> options = new List<string>();
 
     private void Awake()
     {
@@ -34,8 +38,10 @@ public class UIVariableBindActiveEditor : Editor {
     }
 
     private void OnEnable()
-    {//targer为自身引用
+    {
         self = (UIVariableBindActive)target;
+        variableTable = serializedObject.FindProperty("variableTable");
+
         variables = serializedObject.FindProperty("variables");
         booleanLogic = serializedObject.FindProperty("booleanLogic");
         transitionMode = serializedObject.FindProperty("transitionMode");
@@ -53,12 +59,12 @@ public class UIVariableBindActiveEditor : Editor {
             currrent = variables.GetArrayElementAtIndex(index);
             variableName = currrent.FindPropertyRelative("variableName");
             reverse = currrent.FindPropertyRelative("reverse");
-
+            Debug.Log(variableName.stringValue);
             if (!string.IsNullOrEmpty(variableName.stringValue))
             {
-                for (int i = 0; i < names.Length; i++)
+                for (int i = 0; i < options.Count; i++)
                 {
-                    if (names[i] == variableName.stringValue)
+                    if (options[i] == variableName.stringValue)
                     {
                         intList[index] = i;
                     }
@@ -70,52 +76,52 @@ public class UIVariableBindActiveEditor : Editor {
                 rect.width,
                 EditorGUIUtility.singleLineHeight);
             line_sercond = new Rect(
-                rect.x,
+                  rect.x,
                 rect.y + EditorGUIUtility.singleLineHeight,
                 rect.width,
                 EditorGUIUtility.singleLineHeight);
 
-            intList[index] = EditorGUI.Popup(line_first, "Variable Name ", intList[index], names);
+            intList[index] = EditorGUI.Popup(line_first, "Variable Name ", intList[index], options.ToArray());
             reverse.boolValue = EditorGUI.Toggle(line_sercond, "Reverse", reverse.boolValue);
             try
             {
-                variableName.stringValue = names[intList[index]];
+                if (options[intList[index]] == "null")
+                    variableName.stringValue = default(string);
+                else
+                    variableName.stringValue = options[intList[index]];
             }
             catch (Exception) { }
         };
     }
 
-    List<String> paramList = new List<string>();
-    string[] names = new string[] { };
     public override void OnInspectorGUI()
     {
         serializedObject.Update();      //刷新最新的数据
-        self.variableTable = EditorGUILayout.ObjectField("Variable Table", self.variableTable, typeof(UIVariableTable), true) as UIVariableTable;
+        variableTable.objectReferenceValue = EditorGUILayout.ObjectField("Variable Table", self.VariableTable, typeof(UIVariableTable), true) as UIVariableTable;
         booleanLogic.enumValueIndex = 
             (int)(UIVariableBindBool.BooleanLogic)EditorGUILayout.EnumPopup("Boolean logic", (UIVariableBindBool.BooleanLogic)booleanLogic.enumValueIndex);
 
         //绘制列表
-        paramList.Clear();
-        if (self.variableTable != null)
+        options.Clear();
+        if (self.VariableTable != null)
         {
-            for (int i = 0; i < self.variableTable.Variables.Length; i++)
+            for (int i = 0; i < self.VariableTable.Variables.Length; i++)
             {
-                if (self.variableTable.Variables != null)
+                if (self.VariableTable.Variables != null)
                 {
-                    if (!string.IsNullOrEmpty(self.variableTable.Variables[i].Name))
+                    if (!string.IsNullOrEmpty(self.VariableTable.Variables[i].Name))
                     {
-                        if (self.variableTable.Variables[i].Type == UIVariableType.String
-                            || self.variableTable.Variables[i].Type == UIVariableType.Boolean
-                            || self.variableTable.Variables[i].Type == UIVariableType.Interger
-                            || self.variableTable.Variables[i].Type == UIVariableType.Float
+                        if (self.VariableTable.Variables[i].Type == UIVariableType.Boolean
+                            || self.VariableTable.Variables[i].Type == UIVariableType.Interger
+                            || self.VariableTable.Variables[i].Type == UIVariableType.Float
                             )
                         {
-                            paramList.Add(self.variableTable.Variables[i].Name);
+                            options.Add(self.VariableTable.Variables[i].Name);
                         }
                     }
                 }
             }
-            names = paramList.ToArray();
+            options.Add("null");
         }
 
         list.DoLayoutList();
@@ -123,6 +129,5 @@ public class UIVariableBindActiveEditor : Editor {
         transitionMode.enumValueIndex = 
             (int)(UIVariableBindActive.TransitionModeEnum)EditorGUILayout.EnumPopup("Transition Mode", (UIVariableBindActive.TransitionModeEnum)transitionMode.enumValueIndex);
         serializedObject.ApplyModifiedProperties(); //应用修改的数据
-        self.BindVariables();
     }
 }

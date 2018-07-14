@@ -48,7 +48,7 @@ function KnapsackCell:__init()
 		local item_cell = ItemCell.New()
 		self.item_cell_list[i] = item_cell
 		self.item_cell_list[i]:SetInstanceParent(self.item_cell_obj_list[i])
-		self.item_cell_list[i]:ListenClick(BindTool.Bind(self.Click, self))
+		self.item_cell_list[i]:ListenClick(BindTool.Bind(self.Click, self, i))
 	end
 
 	self.index = 0
@@ -70,8 +70,9 @@ function KnapsackCell:OnFlush()
 	end
 end
 
-function KnapsackCell:Click()
-	print_error("Item_cell"..self.index)
+function KnapsackCell:Click(index)
+	index = index * 5 - 5 + self.index
+	print_error("Item_cell"..index)
 end
 
 function KnapsackCell:SetChildrenToggeleGroup(group)

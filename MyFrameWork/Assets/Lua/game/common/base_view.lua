@@ -92,7 +92,7 @@ function BaseView:Release()
 	self:ReleaseCallBack()
 
 	if not IsNil(self.event_table) then
-		self.event_table:ClearAllEvent()
+		self.event_table:ClearAllEvents()
 		self.event_table = nil
 	end
 
@@ -142,7 +142,7 @@ function BaseView:FindObj(name_path, component_type, no_print)
 	return nil
 end
 
--- 监听事件
+-- 监听事件 	--listener：监听事件的方法
 function BaseView:ListenEvent(eventName, listener)
 	if self.event_table ~= nil then
 		return self.event_table:ListenEvent(eventName, listener)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 /// <summary>
@@ -13,7 +14,7 @@ public abstract class UIVariableBind : BaseBehaviour {
     /// UI变量配置表
     /// </summary>
     [SerializeField, Tooltip("The variable table for this bind.")]
-    public UIVariableTable variableTable;
+    private UIVariableTable variableTable;
 
     /// <summary>
     /// 是否开始运行
@@ -28,8 +29,8 @@ public abstract class UIVariableBind : BaseBehaviour {
     /// </summary>
     public UIVariableTable VariableTable
     {
-        get { return variableTable; }
-        set { variableTable = value; }
+        get;
+        private set;
     }
 
     /// <summary>
@@ -75,9 +76,9 @@ public abstract class UIVariableBind : BaseBehaviour {
     /// <summary>
     /// 子类重写 分别在界面创建打开时  销毁时调用
     /// </summary>
-    public abstract void BindVariables();
+    protected abstract void BindVariables();
 
-    public abstract void UnbindVariables();
+    protected abstract void UnbindVariables();
 
     /// <summary>
     /// 挂载后开始运行
@@ -85,6 +86,22 @@ public abstract class UIVariableBind : BaseBehaviour {
     protected override void Awake()
     {
         this.Init();
+    }
+
+    protected override void OnValidate()
+    {
+        PrefabType prefabType = PrefabUtility.GetPrefabType(gameObject);      
+        if (prefabType != PrefabType.Prefab)
+        {
+            UnbindVariables();
+            start = true;
+            GetTable();
+            BindVariables();
+        }
+        else if (this.variableTable == null)
+        {
+            this.variableTable = this.GetComponentInParentHard<UIVariableTable>();
+        }
     }
 
     /// <summary>

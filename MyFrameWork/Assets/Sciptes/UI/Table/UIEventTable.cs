@@ -8,101 +8,164 @@ using UnityEngine.Events;
 /// <summary>
 /// UI事件配置表
 /// </summary>
-public class UIEventTable : BaseBehaviour {
+public class UIEventTable : BaseBehaviour
+{
+    [SerializeField, Tooltip("The event list.")]
+    private string[] events;
 
-    /// <summary>
-    /// 事件参数数组
-    /// </summary>
-    [SerializeField]
-    public UIEvent[] events;
-
-    /// <summary>
-    /// 事件名字与事件参数的字典
-    /// </summary>
-    Dictionary<string, UIEvent> eventDic = new Dictionary<string, UIEvent>();
-
-    protected override void Awake()
-    {      
-        //根据事件参数数组里的数据为字典添加键值对
-        foreach (var item in events)
-        {
-            item.ClickEventHandler = null;
-            eventDic.Add(item.eventName, item);
-        }
-    }
-
-    /// <summary>
-    /// 添加事件监听
-    /// </summary>
-    public void ListenEvent(string eventName, UnityAction call)
+    public string[] Events
     {
-        if (eventDic.ContainsKey(eventName))
-        {
-            if (eventDic[eventName].ClickEventHandler != null)
-            {
-                eventDic[eventName].ClickEventHandler += call;
-            }
-            else
-            {
-                eventDic[eventName].ClickEventHandler = call;
-            }
-        }
-        else
-        {
-            Debug.LogError("no such event,check it out!");
-        }
+        get { return this.events; }
     }
 
+    private Dictionary<string, UIEventLinkedList> eventMap;       //string和事件(委托链)对应关系
+
+    //一个string对应一个链表
+    private Dictionary<string, LinkedList<Component>> eventBindMap = new Dictionary<string, LinkedList<Component>>(StringComparer.Ordinal);     //string和绑定的所有组件对应关系
+
     /// <summary>
-    /// 获取指定事件对应的处理方法
+    /// 获取事件表
     /// </summary>
-    public UnityAction GetEventHandler(string eventName)
+    /// <returns></returns>
+    private Dictionary<string, UIEventLinkedList> GetEventMap()
     {
-        return eventDic[eventName].ClickEventHandler;
+        if (eventMap == null)
+        {
+            eventMap = new Dictionary<string, UIEventLinkedList>(StringComparer.Ordinal);
+            string[] array = this.events;
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (!eventMap.ContainsKey(events[i]))
+                {
+                    eventMap.Add(events[i], new UIEventLinkedList());
+                }
+            }
+
+        }
+        return eventMap;
+    }
+
+    public void Sort()
+    {
+        Array.Sort<string>(events);
     }
 
     /// <summary>
-    /// 清除事件
+    /// 监听事件
     /// </summary>
+    /// <param name="eventName"></param>
+    /// <param name="call"></param>
+    /// <returns></returns>
+    public SignalHandle ListenEvent(string eventName, SignalDelegate call)
+    {
+        UIEventLinkedList linkedList;
+        if (!GetEventMap().TryGetValue(eventName, out linkedList))
+        {
+            Debug.LogErrorFormat("{0} is trying to listen event {1}, but it does not existed.", new object[]
+                {
+                    name,
+                    eventName
+                });
+            return new SignalHandle(null, null);
+        }
+        return linkedList.GetHandle(call);
+    }
+
+    /// <summary>
+    /// 清除当前界面所有事件
+    /// </summary>
+    public void ClearAllEvents()
+    {
+        foreach (var item in GetEventMap())
+        {
+            item.Value.Clear();
+        }
+    }
+
     public void ClearEvent(string eventName)
     {
-        Debug.Log(eventName);
-        if (eventDic.ContainsKey(eventName))
+        UIEventLinkedList result;
+        if(!GetEventMap().TryGetValue(eventName, out result))
         {
-            eventDic.Remove(eventName);
+            Debug.LogErrorFormat("{0} is trying to clear event {1}, but it does not existed.",
+                new object[] { name, eventName });
+        }
+        else if (result != null)
+        {
+            result.Clear();
         }
     }
 
     /// <summary>
-    /// 清除所有事件
+    /// 查找引用当前点击事件的所有组件
     /// </summary>
-    public void ClearAllEvent()
+    /// <param name="eventName"></param>
+    /// <returns></returns>
+    public ICollection<Component> FindReferenced(string eventName)
     {
-        eventDic.Clear();
+        if (string.IsNullOrEmpty(eventName))
+        {
+            return null;
+        }
+        LinkedList<Component> result;
+        if (!eventBindMap.TryGetValue(eventName, out result))
+        {
+            return null;
+        }
+        return result;
     }
 
-    protected override void OnDestroy()
+    /// <summary>
+    /// 给eventName的component链加一个节点
+    /// </summary>
+    /// <param name="eventName"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public LinkedListNode<Component> AddNode(string eventName, Component value)
     {
-        foreach (var item in events)
+        LinkedList<Component> linkedList;
+        //如果当前event没有对应的linkedList 创建一个
+        if (!eventBindMap.TryGetValue(eventName, out linkedList))
         {
-            item.ClickEventHandler = null;
+            linkedList = new LinkedList<Component>();
+            eventBindMap.Add(eventName, linkedList);
+        }
+        //吧value加载linkedList最后
+        return linkedList.AddLast(value);
+    }
+
+    /// <summary>
+    /// 删除eventName的component链上的一个节点node
+    /// </summary>
+    /// <param name="eventName"></param>
+    /// <param name="node"></param>
+    public void RemoveNode(string eventName, LinkedListNode<Component> node)
+    {
+        LinkedList<Component> linkedList;
+        if(eventBindMap.TryGetValue(eventName,out linkedList))
+        {
+            linkedList.Remove(node);
         }
     }
-}
 
-/// <summary>
-/// UI事件参数类
-/// </summary>
-[Serializable]
-public class UIEvent
-{
     /// <summary>
-    /// 事件名字
+    /// 根据eventName获取对应点击事件
     /// </summary>
-    public string eventName;
+    /// <param name="eventName"></param>
+    /// <returns></returns>
+    public UIEventLinkedList GetHandle(string eventName)
+    {
+        if (string.IsNullOrEmpty(eventName)) { return null; }
+        UIEventLinkedList result;
+        if (!GetEventMap().TryGetValue(eventName, out result))
+        {
+            return null;
+        }
+        return result;
+    }
 
-    public GameObject btnObj;
-
-    [HideInInspector]
-    public UnityAction ClickEventHandler;
+    protected override void OnValidate()
+    {
+        eventMap = null; //当前table的值有修改时将eventMap置空
+    }
 }

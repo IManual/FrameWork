@@ -442,14 +442,17 @@ public class UIVariable
         }
     }
 
-    internal void Fun0()
+    /// <summary>
+    /// 清空当前变量绑定的所有Bind引用
+    /// </summary>
+    public void ClearBindList()
     {
-        List<UIVariableBind> arg_23_0 = this.variableBindList;
-        if (UIVariable.bindList == null)
+        List<UIVariableBind> tmpList = this.variableBindList;
+        if (bindList == null)
         {
-            UIVariable.bindList = new Predicate<UIVariableBind>(UIVariable.IsNull);
+            bindList = new Predicate<UIVariableBind>(UIVariable.IsNull);
         }
-        arg_23_0.RemoveAll(UIVariable.bindList);
+        tmpList.RemoveAll(bindList);
     }
 
     [CompilerGenerated]
@@ -463,43 +466,40 @@ public class UIVariable
         this.variableBindList.Remove(bind);
     }
 
-    #region 多余代码
-    //internal void Fun()
-    //{
-    //    switch (this.type)
-    //    {
-    //        case UIVariableType.Boolean:
-    //            this.intergerValue = 0L;
-    //            this.floatValue = 0f;
-    //            this.stringValue = null;
-    //            this.assetValue = default(AssetID);
-    //            break;
-    //        case UIVariableType.Interger:
-    //            this.booleanValue = false;
-    //            this.floatValue = 0f;
-    //            this.stringValue = null;
-    //            this.assetValue = default(AssetID);
-    //            break;
-    //        case UIVariableType.Float:
-    //            this.intergerValue = 0L;
-    //            this.booleanValue = false;
-    //            this.stringValue = null;
-    //            this.assetValue = default(AssetID);
-    //            break;
-    //        case UIVariableType.String:
-    //            this.intergerValue = 0L;
-    //            this.floatValue = 0f;
-    //            this.assetValue = default(AssetID);
-    //            break;
-    //        case UIVariableType.Asset:
-    //            this.intergerValue = 0L;
-    //            this.floatValue = 0f;
-    //            this.stringValue = null;
-    //            this.booleanValue = false;
-    //            break;
-    //    }
-    //}
-
-    #endregion
+    public void AddDefaultValue()
+    {
+        switch (this.type)
+        {
+            case UIVariableType.Boolean:
+                this.intergerValue = 0L;
+                this.floatValue = 0f;
+                this.stringValue = null;
+                this.assetValue = default(AssetID);
+                break;
+            case UIVariableType.Interger:
+                this.booleanValue = false;
+                this.floatValue = 0f;
+                this.stringValue = null;
+                this.assetValue = default(AssetID);
+                break;
+            case UIVariableType.Float:
+                this.intergerValue = 0L;
+                this.booleanValue = false;
+                this.stringValue = null;
+                this.assetValue = default(AssetID);
+                break;
+            case UIVariableType.String:
+                this.intergerValue = 0L;
+                this.floatValue = 0f;
+                this.assetValue = default(AssetID);
+                break;
+            case UIVariableType.Asset:
+                this.intergerValue = 0L;
+                this.floatValue = 0f;
+                this.stringValue = null;
+                this.booleanValue = false;
+                break;
+        }
+    }
 }
 

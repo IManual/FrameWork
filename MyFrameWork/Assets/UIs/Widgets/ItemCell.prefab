@@ -54,9 +54,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224539947816213692}
-  - component: {fileID: 114913678402617268}
   - component: {fileID: 114476560396044252}
   - component: {fileID: 114670948366698476}
+  - component: {fileID: 114596573329131978}
+  - component: {fileID: 114913678402617268}
   m_Layer: 5
   m_Name: ItemCell
   m_TagString: Untagged
@@ -168,8 +169,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   events:
-  - eventName: Click
-    btnObj: {fileID: 0}
+  - Click
+--- !u!114 &114596573329131978
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1697456671877030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 915ef2ca98827fe40983a1b2d449d881, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventTable: {fileID: 114476560396044252}
+  eventName: Click
 --- !u!114 &114661651574636208
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -219,6 +232,9 @@ MonoBehaviour:
       bundleName: 
       assetName: 
       assetGUID: 
+    variableBindList:
+    - {fileID: 114116912807303410}
+  repeatVar: []
 --- !u!114 &114770650867104074
 MonoBehaviour:
   m_ObjectHideFlags: 1

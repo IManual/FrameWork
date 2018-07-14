@@ -29,22 +29,6 @@ public class UIVariableBindText : UIVariableBind
     private string[] paramBinds;
 
     /// <summary>
-    /// 绑定的变量名（string名称）列表
-    /// </summary>
-    public string[] ParamBinds
-    {
-        get
-        {
-            return paramBinds;
-        }
-
-        set
-        {
-            paramBinds = value;
-        }
-    }
-
-    /// <summary>
     /// 当前的Text组件
     /// </summary>
     private Text UIText;
@@ -72,69 +56,80 @@ public class UIVariableBindText : UIVariableBind
     /// </summary>
     public void SetFormat()
     {
-        if (this.UIText == null)
+        if (UIText == null)
         {
-            this.UIText = base.GetComponent<Text>();
+            UIText = base.GetComponent<Text>();
         }
-        if (UIText == null || paramBinds == null || variableList == null)
+        if (!(UIText == null) && paramBinds != null && variableList != null)
         {
-            return;
-        }
-        //如果当前format是空的  只显示参数列表第一个参数的值
-        if (string.IsNullOrEmpty(this.format))
-        {//且参数名列表不为空
-            if (this.paramBinds.Length > 0)
-            {//拿到当前变量列表第一个
-                UIVariable uIVariable = this.variableList[0];
-                if (uIVariable != null)
-                {//如果不为空 拿到当前变量的 值
-                    object valueObject = uIVariable.ValueObject;
-                    if (valueObject != null)
-                    {   //如果有值
-                        this.UIText.text = valueObject.ToString();
+            if (string.IsNullOrEmpty(format))
+            {
+                if (paramBinds.Length > 0)
+                {
+                    UIVariable uIVariable = variableList[0];
+                    if (uIVariable != null)
+                    {
+                        object valueObject = uIVariable.ValueObject;
+                        if (valueObject != null)
+                        {
+                            UIText.text = valueObject.ToString();
+                        }
                     }
                 }
-                else
+            }
+            else
+            {
+                foreach (var item in variableList)
                 {
-                    this.UIText.text = "";
+                    //Debug.Log(item.Name + "------------" + item.GetHashCode());
+                }
+                object[] array = new object[paramBinds.Length];
+                for (int i = 0; i < paramBinds.Length; i++)
+                {
+                    UIVariable uIVariable2 = variableList[i];
+                    if (uIVariable2 != null)
+                    {
+                        array[i] = uIVariable2.ValueObject;
+                    }
+                }
+                try
+                {
+                    UIText.text = string.Format(format, array);
+                }
+                catch(FormatException ex)
+                {
+                    if (Application.isPlaying)
+                    {
+                        Debug.LogError(ex.Message, this);
+                    }
                 }
             }
+            return;
         }
-        else
-        {   //如果format 不为空
-            object[] array = new object[this.paramBinds.Length];
-            for (int i = 0; i < this.paramBinds.Length; i++)
-            {//拿到所有变量
-                UIVariable uIVariable2 = this.variableList[i];
-                if (uIVariable2 != null)
-                {//拿到所有变量的值
-                    array[i] = uIVariable2.ValueObject;
-                }
-            }
-            try
-            {//尝试按照format格式进行组合
-                tmp = this.format;
-                if (Regex.Matches(tmp, "{").Count % 2 == 1 && Regex.Matches(tmp, "{").Count != Regex.Matches(tmp, "}").Count)
-                {
-                    tmp = tmp.Replace("{", "{{");                 
-                }
-                this.UIText.text = string.Format(tmp, array);
-            }
-            catch (FormatException ex)
-            {//如果失败 抛出异常
-                if (Application.isPlaying)
-                {
-                    Debug.Log(ex.Message, this);
-                }
-            }
-        }
+
+            //try
+            //{//尝试按照format格式进行组合
+            //    tmp = this.format;
+            //    if (Regex.Matches(tmp, "{").Count % 2 == 1 && Regex.Matches(tmp, "{").Count != Regex.Matches(tmp, "}").Count)
+            //    {
+            //        tmp = tmp.Replace("{", "{{");                 
+            //    }
+            //    this.UIText.text = string.Format(tmp, array);
+            //}
+            //catch (FormatException ex)
+            //{//如果失败 抛出异常
+            //    if (Application.isPlaying)
+            //    {
+            //        Debug.Log(ex.Message, this);
+            //    }
+            //}
     }
-    string tmp = "";
+    //string tmp = "";
     /// <summary>
     /// 当前脚本挂载时调用一次  父类Init方法可调用当前方法
     /// </summary>
-    public override void BindVariables()
-    {        
+    protected override void BindVariables()
+    {
         //如果当前绑定变量名列表有值
         if (this.paramBinds != null && this.paramBinds.Length > 0)
         {
@@ -145,32 +140,31 @@ public class UIVariableBindText : UIVariableBind
                 string text = this.paramBinds[i];
                 if (!string.IsNullOrEmpty(text))
                 {//拿到所有的变量
-                    UIVariable uIVariable = base.FindVariable(text); 
+                    UIVariable uIVariable = base.FindVariable(text);
                     if (uIVariable == null)
                     {
-                        //Debug.Log(name + "can not find a variable " + text);
+                        Debug.LogError(name + " can not find a variable " + text);
                     }
                     else
                     {
                         //将刷新text的方法 挂载到 变量初始化的的回调上
-                        uIVariable.OnValueInitialized += new Action(this.SetFormat);
+                        uIVariable.OnValueInitialized += new Action(SetFormat);
                         //将刷新text的方法 挂载到 变量改变的回调上
-                        uIVariable.OnValueChanged += new Action(this.SetFormat);
+                        uIVariable.OnValueChanged += new Action(SetFormat);
                         uIVariable.AddBind(this);
                         //给当前的variableList变量列表赋值
-                        this.variableList[i] = uIVariable;
+                        variableList[i] = uIVariable;
                     }
                 }
             }
-            //刷新一次text
-            this.SetFormat();
+            SetFormat();
         }
     }
 
     /// <summary>
     /// 解绑变量  销毁时调用
     /// </summary>
-    public override void UnbindVariables()
+    protected override void UnbindVariables()
     {
         if (this.variableList != null)
         {

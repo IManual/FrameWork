@@ -64,7 +64,7 @@ public class UIVariableBindActive : UIVariableBindBool
     [DebuggerHidden]
     private IEnumerator ShowOrHide(CanvasGroup canvasGroup, float num, bool flag)
     {
-        //UIVariableBindActive bindActive = new UIVariableBindActive();
+        UIVariableBindActive bindActive = new UIVariableBindActive();
         //bindActive.canvasGroup = canvasGroup;
         //bindActive.transitionTime = num;
         //bindActive. = flag;

@@ -8,6 +8,8 @@ using UnityEngine;
 public class UIEventTableEditor : Editor {
 
     ReorderableList list;
+    SerializedProperty element;
+    Rect eventRect;
 
     private void OnEnable()
     {
@@ -16,8 +18,14 @@ public class UIEventTableEditor : Editor {
         list.drawElementCallback = 
             (rect, index, isActive, isFocused) =>
         {
-            var element = prop.GetArrayElementAtIndex(index);
-            EditorGUI.PropertyField(rect, element);
+            eventRect = new Rect(rect)
+            {
+                width = rect.width,
+                y = rect.y + 2,
+                height = EditorGUIUtility.singleLineHeight,
+            };
+            element = prop.GetArrayElementAtIndex(index);
+            EditorGUI.PropertyField(eventRect, element, GUIContent.none);
         };
         list.drawHeaderCallback = (rect) =>
         {
@@ -27,8 +35,11 @@ public class UIEventTableEditor : Editor {
 
     public override void OnInspectorGUI()
     {
+        //拉取最新数据
         serializedObject.Update();
+        //绘制list
         list.DoLayoutList();
+        //应用修改
         serializedObject.ApplyModifiedProperties();
     }
 }

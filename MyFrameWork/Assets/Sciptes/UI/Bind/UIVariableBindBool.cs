@@ -43,7 +43,7 @@ public abstract class UIVariableBindBool : UIVariableBind
         private bool reverse;
 
         [CompilerGenerated]
-        public UIVariable variable;
+        private UIVariable variable;            //当前绑定的单个变量
 
         public string GetVariableName()
         {
@@ -193,7 +193,7 @@ public abstract class UIVariableBindBool : UIVariableBind
 
     protected abstract void OnValueChanged();
 
-    public override void BindVariables()
+    protected override void BindVariables()
     {
         if (variables != null)
         {
@@ -219,7 +219,7 @@ public abstract class UIVariableBindBool : UIVariableBind
         this.OnValueChanged();
     }
 
-    public override void UnbindVariables()
+    protected override void UnbindVariables()
     {
         if(variables != null)
         {

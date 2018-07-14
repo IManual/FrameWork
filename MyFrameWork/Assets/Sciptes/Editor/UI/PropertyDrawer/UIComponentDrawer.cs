@@ -15,10 +15,14 @@ public class UIComponentDrawer : PropertyDrawer {
             SerializedProperty gameProperty = property.FindPropertyRelative("gameObject");
             var nameRect = new Rect(position)
             {
+                y = position.y + 2,
+                height = EditorGUIUtility.singleLineHeight,
                 width = position.width * 0.4f,
             };
             var gameRect = new Rect(position)
             {
+                y = position.y + 2,
+                height = EditorGUIUtility.singleLineHeight,
                 width = position.width * 0.6f - 5,
                 x = position.width * 0.4f + 38,
             };

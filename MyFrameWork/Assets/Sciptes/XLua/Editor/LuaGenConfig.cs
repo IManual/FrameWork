@@ -59,6 +59,7 @@ public static class LuaGenConfig
         typeof(System.Collections.IEnumerator),
         typeof(Action<UIVariable>),
         typeof(Action<Vector2>),
+        typeof(SignalDelegate),
 
         typeof(ListViewSimpleDelegate.NumberOfCellsDelegate),
         typeof(ListViewSimpleDelegate.CellRefreshDelegate),

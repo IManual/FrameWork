@@ -21,11 +21,10 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(UIVariableTable);
-			Utils.BeginObjectRegister(type, L, translator, 0, 7, 2, 1);
+			Utils.BeginObjectRegister(type, L, translator, 0, 6, 2, 1);
 			
-			Utils.RegisterFunc(L, Utils.METHOD_IDX, "FlushVariableDic", _m_FlushVariableDic);
-			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetRepeatVariable", _m_GetRepeatVariable);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "FindVariable", _m_FindVariable);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetRepeatVariable", _m_GetRepeatVariable);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AddDefaultVariable", _m_AddDefaultVariable);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetVariableNames", _m_GetVariableNames);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "InitializeBinds", _m_InitializeBinds);
@@ -82,7 +81,7 @@ namespace XLua.CSObjectWrap
         
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_FlushVariableDic(RealStatePtr L)
+        static int _m_FindVariable(RealStatePtr L)
         {
 		    try {
             
@@ -94,12 +93,14 @@ namespace XLua.CSObjectWrap
             
                 
                 {
+                    string _name = LuaAPI.lua_tostring(L, 2);
                     
-                    gen_to_be_invoked.FlushVariableDic(  );
+                        UIVariable gen_ret = gen_to_be_invoked.FindVariable( _name );
+                        translator.Push(L, gen_ret);
                     
                     
                     
-                    return 0;
+                    return 1;
                 }
                 
             } catch(System.Exception gen_e) {
@@ -123,35 +124,6 @@ namespace XLua.CSObjectWrap
                 {
                     
                         System.Collections.Generic.List<string> gen_ret = gen_to_be_invoked.GetRepeatVariable(  );
-                        translator.Push(L, gen_ret);
-                    
-                    
-                    
-                    return 1;
-                }
-                
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_FindVariable(RealStatePtr L)
-        {
-		    try {
-            
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-            
-            
-                UIVariableTable gen_to_be_invoked = (UIVariableTable)translator.FastGetCSObj(L, 1);
-            
-            
-                
-                {
-                    string _name = LuaAPI.lua_tostring(L, 2);
-                    
-                        UIVariable gen_ret = gen_to_be_invoked.FindVariable( _name );
                         translator.Push(L, gen_ret);
                     
                     

@@ -11,10 +11,12 @@ class UIVariableBindTextEditor : Editor
 {
     ReorderableList list;
     UIVariableBindText self;
-    string[] names = new string[] { "null" };
     SerializedProperty paramProperty;
+    SerializedProperty variableTable;
+    SerializedProperty element;
+
     int[] intList = new int[10];
-    List<String> paramList = new List<string>();
+    List<String> options = new List<string>();
 
     private void Awake()
     {
@@ -27,72 +29,78 @@ class UIVariableBindTextEditor : Editor
     private void OnEnable()
     {
         self = (UIVariableBindText)target;
+        variableTable = serializedObject.FindProperty("variableTable");
         paramProperty = serializedObject.FindProperty("paramBinds");
         list = new ReorderableList(serializedObject, paramProperty, true, true, true, true);
         list.drawHeaderCallback = (rect) =>
         {
             EditorGUI.LabelField(rect, "ParamsList:");
         };
-        if (self.variableTable == null) self.GetTable();
+        if (self.VariableTable == null) self.GetTable();
     }
 
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
-        paramList.Clear();
-        self.variableTable = EditorGUILayout.ObjectField("Variable Table", self.variableTable, typeof(UIVariableTable), true) as UIVariableTable;
+        options.Clear();
+        variableTable.objectReferenceValue = EditorGUILayout.ObjectField("Variable Table", self.VariableTable, typeof(UIVariableTable), true) as UIVariableTable;
         self.Format = EditorGUILayout.TextField("Format", self.Format);
 
-        if (self.variableTable != null)
+        if (self.VariableTable != null)
         {
-            for (int i = 0; i < self.variableTable.Variables.Length; i++)
+            if (self.VariableTable.Variables != null)
             {
-                if (self.variableTable.Variables != null)
+                for (int i = 0; i < self.VariableTable.Variables.Length; i++)
                 {
-                    if (!string.IsNullOrEmpty(self.variableTable.Variables[i].Name))
+                    if (self.VariableTable.Variables != null)
                     {
-                        if (self.variableTable.Variables[i].Type == UIVariableType.String
-                            || self.variableTable.Variables[i].Type == UIVariableType.Boolean
-                            || self.variableTable.Variables[i].Type == UIVariableType.Interger
-                            || self.variableTable.Variables[i].Type == UIVariableType.Float
-                            )
+                        if (!string.IsNullOrEmpty(self.VariableTable.Variables[i].Name))
                         {
-                            paramList.Add(self.variableTable.Variables[i].Name);
+                            if (self.VariableTable.Variables[i].Type == UIVariableType.String
+                                || self.VariableTable.Variables[i].Type == UIVariableType.Boolean
+                                || self.VariableTable.Variables[i].Type == UIVariableType.Interger
+                                || self.VariableTable.Variables[i].Type == UIVariableType.Float
+                                )
+                            {
+                                options.Add(self.VariableTable.Variables[i].Name);
+                            }
                         }
                     }
                 }
             }
-            paramList.Insert(0, "null");
-            names = paramList.ToArray();
+            options.Add("null");
         }
 
         list.drawElementCallback = (rect, index, isActive, isFocused) =>
         {
-            if (!string.IsNullOrEmpty(self.ParamBinds[index]))
+            element = paramProperty.GetArrayElementAtIndex(index);
+            if (!string.IsNullOrEmpty(element.stringValue))
             {
-                for (int i = 0; i < names.Length; i++)
+                for (int i = 0; i < options.Count; i++)
                 {
-                    if (names[i] == self.ParamBinds[index])
+                    if (options[i] == element.stringValue)
                     {
                         intList[index] = i;
                     }
                 }
             }
-            intList[index] = EditorGUI.Popup(rect, "Element " + index, intList[index], names);
+            intList[index] = EditorGUI.Popup(rect, "Element " + index, intList[index], options.ToArray());
             try
             {
-                self.ParamBinds[index] = names[intList[index]];
+                if (options[intList[index]] == "null")
+                    element.stringValue = default(string);
+                else
+                    element.stringValue = options[intList[index]];
             }
             catch (Exception)
             {
                 intList[index] = 0;
-                self.ParamBinds[index] = names[0];
+                element.stringValue = options[0];
             }
         }; 
 
         //刷新
         list.DoLayoutList();
-        self.BindVariables();
         serializedObject.ApplyModifiedProperties();
     }
 }

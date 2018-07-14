@@ -150,6 +150,7 @@
     <Compile Include="Assets\Sciptes\UI\Other\UIImageMirror.cs" />
     <Compile Include="Assets\Sciptes\UI\Other\UIPrefabLoader.cs" />
     <Compile Include="Assets\Sciptes\UI\Table\UIEventBind.cs" />
+    <Compile Include="Assets\Sciptes\UI\Table\UIEventLinkedList.cs" />
     <Compile Include="Assets\Sciptes\UI\Table\UIEventTable.cs" />
     <Compile Include="Assets\Sciptes\UI\Table\UINameTable.cs" />
     <Compile Include="Assets\Sciptes\UI\Table\UIVariable.cs" />

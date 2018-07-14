@@ -6,45 +6,30 @@ using UnityEngine;
 [CustomEditor(typeof(UIEventBindClick))]
 public class UIEventBindClickEditor : Editor
 {
-    UIEventBindClick bind;
+    UIEventBindClick self;
+    SerializedProperty eventTable;
+    SerializedProperty eventName;
+    int index;
     private void OnEnable()
     {
-        bind = (UIEventBindClick)target;
-        if (bind.table == null)
-        {
-            bind.table = Tool.FindFather(bind.transform, a =>
-            {
-                return a.GetComponent<UIEventTable>() != null;
-            }).GetComponent<UIEventTable>();
-        }
+        self = (UIEventBindClick)target;
+        eventTable = serializedObject.FindProperty("eventTable");
+        eventName = serializedObject.FindProperty("eventName");
     }
+    List<string> options = new List<string>();
 
     public override void OnInspectorGUI()
     {
-        UIEventTable eventTable = bind.table;
-        //赋值
-        if (eventTable != null)
+        options.Clear();
+        serializedObject.Update();
+        eventTable.objectReferenceValue = EditorGUILayout.ObjectField("Event Table", self.EventTable, typeof(UIEventTable), true);
+        if (self.EventTable != null)
         {
-            List<string> eventList = new List<string>();
-            for (int i = 0; i < eventTable.events.Length; i++)
-            {
-                eventList.Add(eventTable.events[i].eventName);
-            }
-            string[] events = eventList.ToArray();
-            bind.index = EditorGUILayout.Popup("Event logic:", bind.index, events);
-            if (events.Length > 0)
-            {
-                foreach (var item in eventTable.events)
-                {
-                    if (item.eventName == events[bind.index])
-                    {
-                        //进行绑定
-                        bind.bindEvent = item;
-                    }
-                }
-            }
+            options.AddRange(self.EventTable.Events);
         }
-        //刷新
-        base.OnInspectorGUI();
+        options.Add("null");
+        index = EditorGUILayout.Popup("Bind Event", index, options.ToArray());
+        eventName.stringValue = options[index];
+        serializedObject.ApplyModifiedProperties();
     }
 }
